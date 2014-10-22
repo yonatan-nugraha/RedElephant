@@ -1,0 +1,138 @@
+<?php
+
+/**
+ * @author yonatan.nugraha@reebonz.com
+ * @since 2014-10-21
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function redelephant_menu() {
+  $items = array();
+  $items['admin/red-elephant'] = array(
+    'title' => 'Red Elephant',
+    'description' => 'This configuration menu for Red Elephant',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_NORMAL_ITEM
+  );
+
+  $items['admin/red-elephant/about-us'] = array(
+    'title' => 'About us',
+    'description' => 'Custom settings for about us page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('aboutus_form'),
+    'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.inc',
+    'type' => MENU_LOCAL_TASK
+  );
+
+	$items['admin/red-elephant/projects'] = array(
+    'title' => 'Projects',
+    'description' => 'Custom settings for projects page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('projects_form'),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_LOCAL_TASK
+  );
+
+  $items['admin/red-elephant/services'] = array(
+    'title' => 'Services',
+    'description' => 'Custom settings for services page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('services_form'),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_LOCAL_TASK
+  );
+
+  $items['admin/red-elephant/news'] = array(
+    'title' => 'News',
+    'description' => 'Custom settings for news page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('news_form'),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_LOCAL_TASK
+  );
+
+  $items['about-us'] = array(
+    'page callback' => 'aboutus_view', 
+    'page arguments' => array(1,2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'redelephant.inc',
+  );
+  
+  $items['projects'] = array(
+    'page callback' => 'projects_view', 
+    'page arguments' => array(1,2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'redelephant.inc',
+  );
+
+  $items['services'] = array(
+    'page callback' => 'services_view', 
+    'page arguments' => array(1,2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'redelephant.inc',
+  );
+
+  $items['news'] = array(
+    'page callback' => 'news_view', 
+    'page arguments' => array(1,2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'redelephant.inc',
+  );
+
+  $items['contact'] = array(
+    'page callback' => 'contact_view', 
+    'page arguments' => array(1,2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'redelephant.inc',
+  );
+  return $items;
+}
+
+/*
+ * Implement hook_theme().
+ */
+function redelephant_theme() {
+  return array(
+    'about-us' => array(
+      'template' => 'about-us',
+      'variables' => array(
+        'data' => NULL,
+      )
+    ),
+    'projects' => array(
+      'template' => 'projects',
+      'variables' => array(
+        'data' => NULL,
+      )
+    ),
+    'services' => array(
+      'template' => 'services',
+      'variables' => array(
+        'data' => NULL,
+      )
+    ),
+    'news' => array(
+      'template' => 'news',
+      'variables' => array(
+        'data' => NULL,
+      )
+    ),
+    'contact' => array(
+      'template' => 'contact',
+      'variables' => array(
+        'data' => NULL,
+      )
+    ),
+  );
+}

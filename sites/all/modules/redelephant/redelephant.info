@@ -1,0 +1,6 @@
+name = Red Elephant Custom Module
+description = "Custom Module for Red Elephant." 
+package = Red Elephant
+core = 7.x 
+files[] = redelephant.module 
+files[] = redelephant.inc 

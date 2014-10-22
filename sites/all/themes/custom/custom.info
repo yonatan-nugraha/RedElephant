@@ -1,0 +1,8 @@
+name = Custom Theme
+core = 7.x
+engine = phptemplate
+stylesheets[all][] = css/customtheme.css
+stylesheets[all][] = bootstrap-3.2.0-dist/css/bootstrap.min.css
+
+scripts[] = bootstrap-3.2.0-dist/js/bootstrap.min.js
+

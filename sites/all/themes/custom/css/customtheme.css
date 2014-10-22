@@ -1,0 +1,12 @@
+p {
+	font-family: 'DIN';
+}
+
+.footer {
+  position: absolute;
+  right: 10%;
+  bottom: 0;
+  left: 10%;
+  padding: 1rem;
+  text-align: center;
+}
