@@ -57,6 +57,16 @@ function redelephant_menu() {
     'type' => MENU_LOCAL_TASK
   );
 
+  $items['admin/red-elephant/newslist'] = array(
+    'title' => 'News List',
+    'description' => 'Custom settings for news page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('newslist_form'),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_LOCAL_TASK
+  );
+
   $items['about-us'] = array(
     'page callback' => 'aboutus_view', 
     'page arguments' => array(1,2),

@@ -293,7 +293,7 @@ function services_form_submit($form, &$form_state) {
 function news_form($form, &$form_state) {
   $form['services'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Services'),
+    '#title' => t('News'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
