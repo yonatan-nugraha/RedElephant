@@ -16,47 +16,46 @@ function aboutus_form($form, &$form_state) {
           ->execute()
           ->fetchAll();
 
-	$form['banner'] = array(
+  $banner = '<img src="'. file_create_url('public://') . $result[0]->filename .'" style="height: 250px; width: 700px;">';
+
+	$form['about_us'] = array(
 	  '#type' => 'fieldset',
-	  '#title' => t('Banner'),
+	  '#title' => t('About us'),
 	  '#collapsible' => TRUE,
 	  '#collapsed' => FALSE,
 	);
 
-  $form['banner']['file'] = array(
+  $form['filename'] = array(
+    '#type' => 'value',
+    '#value' => $result[0]->filename,
+  );
+
+  $form['about_us']['file'] = array(
     '#title' => 'Image',
     '#type' => 'file',
     '#description' => 'Recommendation size: 675 x 270',
-    '#size' => 30
+    '#size' => 30,
   );
 
-  $form['banner']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => 'Save',
-  );
+  if ($result[0]->filename != "") {
+    $form['about_us']['image'] = array(
+      '#markup' => $banner,
+    );
+  }
 
-	$form['description'] = array(
-	  '#type' => 'fieldset',
-	  '#title' => t('Description'),
-	  '#collapsible' => TRUE,
-	  '#collapsed' => FALSE,
-	);
-
-	$form['description']['left'] = array(
+	$form['about_us']['left'] = array(
     '#type' => 'textarea',
     '#title' => t('Left description'),
-    '#description' => "Please enter the left description.",
     '#default_value' => $result[0]->desc_left
   );
 
-	$form['description']['right'] = array(
+	$form['about_us']['right'] = array(
     '#type' => 'textarea',
     '#title' => t('Right description'),
-    '#description' => "Please enter the right description.",
     '#default_value' => $result[0]->desc_right
   );
 
-  $form['description']['submit'] = array(
+  $form['about_us']['submit'] = array(
     '#type' => 'submit',
     '#value' => 'Save',
   );
@@ -72,31 +71,44 @@ function aboutus_form_submit($form, &$form_state) {
     'file_validate_is_image' => array(),
     'file_validate_extensions' => array('png gif jpg jpeg'),
   ));
-  
+
   if ($file) {
     if ($file = file_move($file, 'public://')) {
-      $form_state['values']['file'] = $file;
+      $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+      $form_state['storage']['file'] = $file;
     }
     else {
-      form_set_error('file', t('Failed to write the uploaded file the site\'s file folder.'));
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      $filename = $form_state['values']['filename'];
+      return;
     }
   }
   else {
-    form_set_error('file', t('No file was uploaded.'));
+    $filename = $form_state['values']['filename'];
+    return;
   }
 
-  $desc_left = str_replace("\n", "<br>", $form_state['values']['left']);
-  $desc_right = str_replace("\n", "<br>", $form_state['values']['right']);
+  $desc_left = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['left']);
+  $desc_right = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['right']);
 
 	$result = db_update('about_us')
     ->fields(array(
       'desc_left' => $desc_left,
       'desc_right' => $desc_right,
+      'filename' => $filename,
     ))
     ->condition('id', 1, '=')
     ->execute();
     drupal_set_message('Your change has been saved!');
 }
+
+
+
+
+
+
+
+
 
 
 /**
@@ -201,11 +213,67 @@ function projects_form_submit($form, &$form_state) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Services Form
  */
-function services_form($form, &$form_state) {
+function services_form() {
+  $output = '<a href="services/add/"">Add Services here</a>';
 
+  $header = array( 
+    array('data' => t('No')),
+    array('data' => t('Banner')), 
+    array('data' => t('Title')),
+    array('data' => t('Project')), 
+    array('data' => t('Location')),
+    array('data' => t('Area')),
+    array('data' => t('Type')),
+    array('data' => t('Size')),
+    array('data' => t('Facilities')),
+    array('data' => t('Floor')),
+    array('data' => t('Action')),
+  ); 
+
+  $result = db_select('services', 's')
+  ->fields('s')
+  ->execute()
+  ->fetchAll();
+
+  $row = null;
+  foreach ($result as $i => $record) {
+    $no = $i+1;
+    $banner =  '<img src="'. file_create_url('public://') . $record->filename .'" style="height: 100px; width: 150px;">';
+    $row[] = array(
+      array('data' => $no),
+      array('data' => $banner),
+      array('data' => $record->title),
+      array('data' => $record->project),
+      array('data' => $record->location),
+      array('data' => $record->area),
+      array('data' => $record->type),
+      array('data' => $record->size),
+      array('data' => $record->facilities),
+      array('data' => $record->floor),
+      array('data' => l('Edit', 'admin/red-elephant/services/edit/'. $record->id).' | '.l('Delete', 'admin/red-elephant/services/delete/'. $record->id))
+    );
+  }
+
+  $output .= theme('table', array('header' => $header,
+                     'rows' => $row, 'empty' => t('Table has no row!'))) . theme('pager');
+  return $output;
+}
+
+function add_services_form($form, &$form_state) {
   $form['services'] = array(
     '#type' => 'fieldset',
     '#title' => t('Services'),
@@ -265,15 +333,39 @@ function services_form($form, &$form_state) {
     '#value' => 'Save',
   );
 
+  $form['services']['cancel'] = array(
+    '#type' => 'link',
+    '#title' => 'Cancel',
+    '#href' => 'admin/red-elephant/services',
+  );
+
   return $form;
 }
 
-function services_form_submit($form, &$form_state) {
-  $facilities = str_replace("\n", "<br>", $form_state['values']['facilities']);
+function add_services_form_submit($form, &$form_state) {
+  $file = file_save_upload('file', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file) {
+    if ($file = file_move($file, 'public://')) {
+      $form_state['storage']['file'] = $file;
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+    }
+  }
+  else {
+    form_set_error('file', t('No file was uploaded.'));
+  }
+
+  $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+  $facilities = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['facilities']);
 
   $result = db_insert('services')
   ->fields(array(
-    'title' => $form_state['values']['title'],
+    'title' => strtoupper($form_state['values']['title']),
     'project' => $form_state['values']['project'],
     'location' => $form_state['values']['location'],
     'area' => $form_state['values']['area'],
@@ -281,21 +373,32 @@ function services_form_submit($form, &$form_state) {
     'size' => $form_state['values']['size'],
     'facilities' => $facilities,
     'floor' => $form_state['values']['floor'],
+    'filename' => $filename,
   ))
   ->execute();
 
   drupal_set_message('Your change has been saved!');
 }
 
-/**
- * News Form
- */
-function news_form($form, &$form_state) {
+function edit_services_form($form, &$form_state, $id) {
+  $result = db_select('services', 's')
+          ->fields('s')
+          ->condition('id', $id, '=')
+          ->execute()
+          ->fetchAll();
+
+  $banner = '<img src="'. file_create_url('public://') . $result[0]->filename .'" style="height: 250px; width: 700px;">';
+
   $form['services'] = array(
     '#type' => 'fieldset',
-    '#title' => t('News'),
+    '#title' => t('Services'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
+  );
+
+  $form['id'] = array(
+    '#type' => 'value',
+    '#value' => $id,
   );
 
   $form['services']['file'] = array(
@@ -305,19 +408,58 @@ function news_form($form, &$form_state) {
     '#size' => 30
   );
 
-  $form['services']['date'] = array(
-    '#type' => 'textfield',
-    '#title' => 'Date',
-  );
+  if ($result[0]->filename != "") {
+    $form['services']['image'] = array(
+      '#markup' => $banner,
+    );
+  }
 
   $form['services']['title'] = array(
     '#type' => 'textfield',
     '#title' => 'Title',
+    '#default_value' => $result[0]->title,
   );
 
-  $form['services']['desc'] = array(
+  $form['services']['project'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Project',
+    '#default_value' => $result[0]->project,
+  );
+
+  $form['services']['location'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Location',
+    '#default_value' => $result[0]->location,
+  );
+
+  $form['services']['area'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Area',
+    '#default_value' => $result[0]->area,
+  );
+
+  $form['services']['type'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Type',
+    '#default_value' => $result[0]->type,
+  );
+
+  $form['services']['size'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Size',
+    '#default_value' => $result[0]->size,
+  );
+
+  $form['services']['facilities'] = array(
     '#type' => 'textarea',
-    '#title' => 'Description',
+    '#title' => 'Facilities',
+    '#default_value' => $result[0]->facilities,
+  );
+
+  $form['services']['floor'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Floor',
+    '#default_value' => $result[0]->floor,
   );
 
   $form['services']['submit'] = array(
@@ -325,21 +467,355 @@ function news_form($form, &$form_state) {
     '#value' => 'Save',
   );
 
+  $form['services']['cancel'] = array(
+    '#type' => 'link',
+    '#title' => 'Cancel',
+    '#href' => 'admin/red-elephant/services',
+  );
+
   return $form;
 }
 
-function news_form_submit($form, &$form_state) {
-  $description = str_replace("\n", "<br>", $form_state['values']['desc']);
+function edit_services_form_submit($form, &$form_state) {
+  $file = file_save_upload('file', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file) {
+    if ($file = file_move($file, 'public://')) {
+      $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+      $form_state['storage']['file'] = $file;
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      $filename = $form_state['values']['filename'];
+      return;
+    }
+  }
+  else {
+    $filename = $form_state['values']['filename'];
+    return;
+  }
+
+  $facilities = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['facilities']);
+
+  $result = db_update('services')
+  ->fields(array(
+    'title' => strtoupper($form_state['values']['title']),
+    'project' => $form_state['values']['project'],
+    'location' => $form_state['values']['location'],
+    'area' => $form_state['values']['area'],
+    'type' => $form_state['values']['type'],
+    'size' => $form_state['values']['size'],
+    'facilities' => $facilities,
+    'floor' => $form_state['values']['floor'],
+    'filename' => $filename,
+  ))
+  ->condition('id', $form_state['values']['id'] , '=')
+  ->execute();
+
+  drupal_set_message('Your change has been saved!');
+  $form_state['redirect'] = 'admin/red-elephant/services';
+}
+
+function delete_services_form($form, &$form_state, $id) {
+  $form['id'] = array(
+    '#type' => 'value',
+    '#value' => $id,
+  );
+
+  return confirm_form(
+    $form,
+    t('Delete Services'),
+    'admin/red-elephant/services',
+    t('Are you sure you want to delete this ?'),
+    t('Delete'),
+    t('Cancel')
+  );
+}
+
+function delete_services_form_submit($form, &$form_state) {
+  $result = db_delete('services')
+  ->condition('id', $form_state['values']['id'], '=')
+  ->execute();
+
+  drupal_set_message('Succesfully deleted');
+  $form_state['redirect'] = 'admin/red-elephant/services';
+}
+
+
+
+
+
+
+
+
+
+/**
+ * News Form
+ */
+
+function news_form() {
+  $output = '<a href="news/add/"">Add News here</a>';
+
+  $header = array( 
+    array('data' => t('No')),
+    array('data' => t('Banner')), 
+    array('data' => t('Date')), 
+    array('data' => t('Title')),
+    array('data' => t('Description')),
+    array('data' => t('Action')),
+  ); 
+
+  $result = db_select('news', 'n')
+  ->fields('n')
+  ->execute()
+  ->fetchAll();
+
+  $row = null;
+  foreach ($result as $i => $record) {
+    $no = $i+1;
+    $banner =  '<img src="'. file_create_url('public://') . $record->filename .'" style="height: 100px; width: 150px;">';
+    $row[] = array(
+      array('data' => $no),
+      array('data' => $banner),
+      array('data' => $record->date),
+      array('data' => $record->title),
+      array('data' => $record->description),
+      array('data' => l('Edit', 'admin/red-elephant/news/edit/'. $record->id).' | '.l('Delete', 'admin/red-elephant/news/delete/'. $record->id))
+    );
+  }
+
+  $output .= theme('table', array('header' => $header,
+                     'rows' => $row, 'empty' => t('Table has no row!'))) . theme('pager');
+  return $output;
+}
+
+function add_news_form($form, &$form_state) {
+  $form['news'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Add News'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['news']['file'] = array(
+    '#type' => 'file',
+    '#title' => 'Image',
+    '#description' => 'Recommendation size: 675 x 270',
+    '#size' => 30
+  );
+
+  $form['news']['date'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Date',
+  );
+
+  $form['news']['title'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Title',
+  );
+
+  $form['news']['desc'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Description',
+  );
+
+  $form['news']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Add',
+  );
+
+  $form['news']['cancel'] = array(
+    '#type' => 'link',
+    '#title' => 'Cancel',
+    '#href' => 'admin/red-elephant/news',
+  );
+
+  return $form;
+}
+
+
+function add_news_form_submit($form, &$form_state) {
+  $file = file_save_upload('file', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file) {
+    if ($file = file_move($file, 'public://')) {
+      $form_state['storage']['file'] = $file;
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+    }
+  }
+  else {
+    form_set_error('file', t('No file was uploaded.'));
+  }
+
+  $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+
+  $description = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['desc']);
 
   $result = db_insert('news')
   ->fields(array(
+    'date' => $form_state['values']['date'],
     'title' => $form_state['values']['title'],
+    'description' => $description,
+    'filename' => $filename
   ))
   ->execute();
 
   drupal_set_message('Your change has been saved!');
+
+  $form_state['redirect'] = 'admin/red-elephant/news';
 }
 
+function edit_news_form($form, &$form_state, $id) {
+  $result = db_select('news', 'n')
+          ->fields('n')
+          ->condition('id', $id, '=')
+          ->execute()
+          ->fetchAll();
+
+  $banner = '<img src="'. file_create_url('public://') . $result[0]->filename .'" style="height: 250px; width: 700px;">';
+
+  $form['id'] = array(
+    '#type' => 'value',
+    '#value' => $id,
+  );
+
+  $form['news'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Edit News'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['news']['file'] = array(
+    '#type' => 'file',
+    '#title' => 'Image',
+    '#description' => 'Recommendation size: 675 x 270',
+    '#size' => 30,
+  );
+
+  if ($result[0]->filename != "") {
+    $form['news']['image'] = array(
+      '#markup' => $banner,
+    );
+  }
+
+  $form['news']['date'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Date',
+    '#default_value' => $result[0]->date,
+  );
+
+  $form['news']['title'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Title',
+    '#default_value' => $result[0]->title,
+  );
+
+  $form['news']['desc'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Description',
+    '#default_value' => $result[0]->description,
+  );
+
+  $form['news']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Save',
+  );
+  
+  $form['news']['cancel'] = array(
+    '#type' => 'link',
+    '#title' => 'Cancel',
+    '#href' => 'admin/red-elephant/news',
+  );
+
+  return $form;
+}
+
+function edit_news_form_submit($form, &$form_state) {
+  $file = file_save_upload('file', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file) {
+    if ($file = file_move($file, 'public://')) {
+      $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+      $form_state['storage']['file'] = $file;
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      $filename = $form_state['values']['filename'];
+      return;
+    }
+  }
+  else {
+    $filename = $form_state['values']['filename'];
+    return;
+  }
+
+  $description = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['desc']);
+
+  $result = db_update('news')
+    ->fields(array(
+      'date' => $form_state['values']['date'],
+      'title' => $form_state['values']['title'],
+      'description' => $form_state['values']['desc'],
+      'filename' => $filename
+    ))
+    ->condition('id', $form_state['values']['id'] , '=')
+    ->execute();
+
+    drupal_set_message('Your change has been saved!');
+    $form_state['redirect'] = 'admin/red-elephant/news';
+}
+
+function delete_news_form($form, &$form_state, $id) {
+  $form['id'] = array(
+    '#type' => 'value',
+    '#value' => $id,
+  );
+
+  return confirm_form(
+    $form,
+    t('Delete News'),
+    'admin/red-elephant/news',
+    t('Are you sure you want to delete this ?'),
+    t('Delete'),
+    t('Cancel')
+  );
+}
+
+function delete_news_form_submit($form, &$form_state) {
+  $result = db_delete('news')
+  ->condition('id', $form_state['values']['id'], '=')
+  ->execute();
+
+  drupal_set_message('Succesfully deleted');
+  $form_state['redirect'] = 'admin/red-elephant/news';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+  Implement Hook View form
+ */
 function aboutus_view() {
 	$result = db_select('about_us', 'a')
           ->fields('a')
@@ -348,6 +824,7 @@ function aboutus_view() {
           ->fetchAll();
 
 	return theme('about-us', array(
+    'filename' => $result[0]->filename,
     'desc_left' => $result[0]->desc_left,
     'desc_right' => $result[0]->desc_right,
   ));
@@ -383,7 +860,14 @@ function services_view() {
 }
 
 function news_view() {
-  return theme('news');
+  $result = db_select('news', 'n')
+    ->fields('n')
+    ->execute()
+    ->fetchAll();
+
+  return theme('news', array(
+    'news' => $result,
+  ));
 }
 
 function contact_view() {
