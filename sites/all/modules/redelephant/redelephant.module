@@ -37,34 +37,102 @@ function redelephant_menu() {
     'type' => MENU_LOCAL_TASK
   );
 
+  $items['admin/red-elephant/projects/add/%'] = array(
+    'title' => 'Projects',
+    'description' => 'Custom settings for projects page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('projects_form'),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/red-elephant/projects/add/%'] = array(
+    'title' => 'Projects',
+    'description' => 'Custom settings for projects page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('projects_form'),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_CALLBACK
+  );
+
   $items['admin/red-elephant/services'] = array(
     'title' => 'Services',
     'description' => 'Custom settings for services page',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('services_form'),
+    'page callback' => 'services_form',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
     'type' => MENU_LOCAL_TASK
+  );
+
+  $items['admin/red-elephant/services/add'] = array(
+    'title' => 'Add Services',
+    'description' => 'Custom settings for services page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('add_services_form'),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/red-elephant/services/edit/%'] = array(
+    'title' => 'Edit Services',
+    'description' => 'Custom settings for services page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('edit_services_form', 4),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/red-elephant/services/delete/%'] = array(
+    'title' => 'Delete Services',
+    'description' => 'Custom settings for services page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('delete_services_form', 4),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_CALLBACK
   );
 
   $items['admin/red-elephant/news'] = array(
     'title' => 'News',
     'description' => 'Custom settings for news page',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('news_form'),
+    'page callback' => 'news_form',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
     'type' => MENU_LOCAL_TASK
   );
 
-  $items['admin/red-elephant/newslist'] = array(
-    'title' => 'News List',
+  $items['admin/red-elephant/news/add'] = array(
+    'title' => 'Add News',
     'description' => 'Custom settings for news page',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('newslist_form'),
+    'page arguments' => array('add_news_form'),
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
-    'type' => MENU_LOCAL_TASK
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/red-elephant/news/edit/%'] = array(
+    'title' => 'Edit News',
+    'description' => 'Custom settings for news page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('edit_news_form', 4),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/red-elephant/news/delete/%'] = array(
+    'title' => 'Delete News',
+    'description' => 'Custom settings for news page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('delete_news_form', 4),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'type' => MENU_CALLBACK
   );
 
   $items['about-us'] = array(

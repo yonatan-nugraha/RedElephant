@@ -1,6 +1,6 @@
 <div class="row" style="margin-bottom: 30px">
 	<div class="col-xs-12">
-		<img src="<?php print drupal_get_path('module', 'redelephant') . '/images/banner.jpg' ?>" style="width: 12in; height: 3.2in;">
+		<img src="<?php print file_create_url('public://') . $filename; ?>" style="width: 12in; height: 3.2in;">
 	</div>
 </div>
 

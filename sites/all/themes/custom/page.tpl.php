@@ -15,11 +15,6 @@ global $user;
               </a>
             </li>
           </ul>
-          <!--
-  			  <?php if ($main_menu): ?>
-  			    <?php print theme('links__system_main_menu', array('links' => $main_menu, 'attributes' => array('id' => 'main-menu', 'class' => 'nav navbar-nav navbar-right'))); ?>
-  			  <?php endif; ?>
-          -->
           <ul class="nav navbar-nav navbar-right">
             <li>
               <a href="<?php print $front_page . 'about-us';?>"><strong>ABOUT US</strong></a>
@@ -37,19 +32,6 @@ global $user;
               <a href="<?php print $front_page . 'contact';?>"><strong>CONTACT</strong></a>
             </li>
           </ul>
-          <!--
-          <ul class="nav navbar-nav navbar-right">
-            <?php if ($user->uid) { ?>
-            <li class="dropdown">
-              <?php print l(t($user->name), 'user/logout', array('attributes' => array('class' => 'dropdown-toggle', 'data-toggle' => 'dropdown'))); ?>
-            </li>
-            <?php } else { ?>
-            <li>
-              <?php print l(t('Sign in'), 'user/login'); ?>
-            </li>
-            <?php } ?>
-          </ul>
-          -->
   		  </div>
   	  </div>	
     </div>
