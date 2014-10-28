@@ -9,7 +9,6 @@
  * About us Form
  */
 function aboutus_form($form, &$form_state) {
-
   $result = db_select('about_us', 'a')
           ->fields('a')
           ->condition('id', 1, '=')
@@ -75,7 +74,11 @@ function aboutus_form_submit($form, &$form_state) {
   if ($file) {
     if ($file = file_move($file, 'public://')) {
       $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+      /*
       $form_state['storage']['file'] = $file;
+      $file->status = FILE_STATUS_PERMANENT;
+      file_save($file);
+      */
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -85,7 +88,6 @@ function aboutus_form_submit($form, &$form_state) {
   }
   else {
     $filename = $form_state['values']['filename'];
-    return;
   }
 
   $desc_left = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['left']);
@@ -114,8 +116,104 @@ function aboutus_form_submit($form, &$form_state) {
 /**
  * Projects Form
  */
-function projects_form($form, &$form_state) {
 
+function projects_form() {
+  $output = '<a href="projects/add/local">Add Projects here</a>';
+
+  $header = array( 
+    array('data' => t('No')),
+    array('data' => t('Banner')), 
+    array('data' => t('Title')),
+    array('data' => t('Project')), 
+    array('data' => t('Location')),
+    array('data' => t('Type')),
+    array('data' => t('Size')),
+    array('data' => t('Facilities')),
+    array('data' => t('Amenities')),
+    array('data' => t('Action')),
+  ); 
+
+  $result = db_select('projects', 'p')
+  ->fields('p')
+  ->execute()
+  ->fetchAll();
+
+  $row = null;
+  foreach ($result as $i => $record) {
+    $no = $i+1;
+
+    $filename = explode("/", $record->filename);
+
+    $banner =  '<img src="'. file_create_url('public://') . $filename[0] .'" style="height: 100px; width: 150px;">';
+    $row[] = array(
+      array('data' => $no),
+      array('data' => $banner),
+      array('data' => $record->title),
+      array('data' => $record->project),
+      array('data' => $record->location),
+      array('data' => $record->type),
+      array('data' => $record->size),
+      array('data' => $record->facilities),
+      array('data' => $record->amenities),
+      array('data' => l('Edit', 'admin/red-elephant/projects/edit/'. $record->localoverseas . '/' . $record->id).' | '.l('Delete', 'admin/red-elephant/projects/delete/' . $record->id))
+    );
+  }
+
+  if (isset($_GET['projectid'])) {
+    $result = db_select('projects', 'p')
+    ->fields('p')
+    ->condition('id', $_GET['projectid'], '=')
+    ->execute()
+    ->fetchAll();
+
+    $filename = explode("/", $result[0]->filename);
+
+    print '
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h2 style="margin-top: 0; color: red"><strong>'. $result[0]->title .'</strong></h2>
+      </div>
+      <div class="modal-footer">
+        <div class="col-xs-4" style="padding: 0; text-align: left;">
+          <strong><p style="color: red">PROJECT</p> 
+          <p>'. $result[0]->project .'</p>
+          <p style="color: red">LOCATION</p>
+          <p>'. $result[0]->location .'</p>
+          <p style="color: red">TYPE</p>
+          <p>'. $result[0]->type .'</p>
+          <p style="color: red">SIZE</p>
+          <p>'. $result[0]->size .'</p>
+          <p style="color: red">FACILITIES</p>
+          <p>'. $result[0]->facilities .'</p>
+          <p style="color: red">AMENITIES</p>
+          <p>'. $result[0]->amenities .'</p></strong>
+        </div>
+        <div class="col-xs-8">
+          <div class="row" style="margin-bottom: 20px">
+            <img id="pic" src="'. file_create_url('public://') . $filename[0] .'" style="width: 350px; height: 200px">
+          </div>
+          <div class="row" style="margin-bottom: 20px">';
+    for ($i=0; $i<count($filename); $i++) {
+      if ($filename[$i] != "") {
+      print '
+            <div class="col-xs-2" style="padding: 0" onclick="set_image('. "'" . file_create_url('public://') . $filename[$i] . "'" .')">
+              <img src="'. file_create_url('public://') . $filename[$i] .'" style="width: 45px; height: 45px;">
+            </div>';
+      }
+    }
+    print '
+          </div>
+        </div>
+      </div>';
+    die();
+  }
+
+  $output .= theme('table', array('header' => $header,
+                     'rows' => $row, 'empty' => t('Table has no row!'))) . theme('pager');
+  return $output;
+}
+
+function add_projects_form($form, &$form_state, $locover) {
   $form['projects'] = array(
     '#type' => 'fieldset',
     '#title' => t('Projects'),
@@ -123,40 +221,63 @@ function projects_form($form, &$form_state) {
     '#collapsed' => FALSE,
   );
 
+  $form['locover'] = array(
+    '#type' => 'value',
+    '#value' => $locover,
+  );
+
   $form['projects']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
-    '#description' => 'Recommendation size: 675 x 270',
-    '#size' => 30
   );
 
-  $form['projects']['localoverseas'] = array(
-    '#type' => 'select',
-    '#title' => 'Local / Overseas',
-    '#options' => array(
-      0 => t('Local'),
-      1 => t('Overseas'),
-    ),
+  $form['projects']['file2'] = array(
+    '#type' => 'file',
+    '#title' => 'Image2',
   );
 
-  $form['projects']['local'] = array(
-    '#type' => 'select',
-    '#title' => 'Local',
-    '#options' => array(
-      0 => t('Jakarta'),
-      1 => t('Bandung'),
-      2 => t('Bali'),
-    ),
+  $form['projects']['file3'] = array(
+    '#type' => 'file',
+    '#title' => 'Image3',
   );
 
-  $form['projects']['overseas'] = array(
-    '#type' => 'select',
-    '#title' => 'Overseas',
-    '#options' => array(
-      0 => t('Singapore'),
-      1 => t('Malaysia'),
-    ),
+  $form['projects']['file4'] = array(
+    '#type' => 'file',
+    '#title' => 'Image4',
   );
+
+  $form['projects']['file5'] = array(
+    '#type' => 'file',
+    '#title' => 'Image5',
+  );
+
+  $form['projects']['file6'] = array(
+    '#type' => 'file',
+    '#title' => 'Image6',
+  );
+
+  if ($locover == "local") {
+    $form['projects']['city'] = array(
+      '#type' => 'select',
+      '#title' => 'Local',
+      '#options' => array(
+        'Jakarta' => t('Jakarta'),
+        'Bandung' => t('Bandung'),
+        'Bali' => t('Bali'),
+      ),
+    );
+  }
+
+  else {
+    $form['projects']['city'] = array(
+      '#type' => 'select',
+      '#title' => 'Overseas',
+      '#options' => array(
+        'Singapore' => t('Singapore'),
+        'Malaysia' => t('Malaysia'),
+      ),
+    );
+  }
 
   $form['projects']['title'] = array(
     '#type' => 'textfield',
@@ -198,24 +319,479 @@ function projects_form($form, &$form_state) {
     '#value' => 'Save',
   );
 
+  $form['projects']['cancel'] = array(
+    '#type' => 'link',
+    '#title' => 'Cancel',
+    '#href' => 'admin/red-elephant/projects',
+  );
+
   return $form;
 }
 
-function projects_form_submit($form, &$form_state) {
-  $result = db_insert('project')
+function add_projects_form_submit($form, &$form_state) {
+  $file = file_save_upload('file', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file) {
+    if ($file = file_move($file, 'public://')) {
+      $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      return;
+    }
+  }
+
+  $file2 = file_save_upload('file2', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file2) {
+    if ($file2 = file_move($file2, 'public://')) {
+      $filename .= "/" . substr($file2->destination, strrpos($file2->destination, '/')+1);
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      return;
+    }
+  }
+
+  $file3 = file_save_upload('file3', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file3) {
+    if ($file3 = file_move($file3, 'public://')) {
+      $filename .= "/" . substr($file3->destination, strrpos($file3->destination, '/')+1);
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      return;
+    }
+  }
+
+  $file4 = file_save_upload('file4', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file4) {
+    if ($file4 = file_move($file4, 'public://')) {
+      $filename .= "/" . substr($file4->destination, strrpos($file4->destination, '/')+1);
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      return;
+    }
+  }
+
+  $file5 = file_save_upload('file5', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file5) {
+    if ($file5 = file_move($file5, 'public://')) {
+      $filename .= "/" . substr($file5->destination, strrpos($file5->destination, '/')+1);
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      return;
+    }
+  }
+
+  $file6 = file_save_upload('file6', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file6) {
+    if ($file6 = file_move($file6, 'public://')) {
+      $filename .= "/" . substr($file6->destination, strrpos($file6->destination, '/')+1);
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      return;
+    }
+  }
+
+  $facilities = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['facilities']);
+  $amenities = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['amenities']);
+
+  $result = db_insert('projects')
   ->fields(array(
-    'desc_left' => $form_state['values']['left'],
-    'desc_right' => $form_state['values']['right'],
+    'title' => strtoupper($form_state['values']['title']),
+    'project' => $form_state['values']['project'],
+    'location' => $form_state['values']['location'],
+    'type' => $form_state['values']['type'],
+    'size' => $form_state['values']['size'],
+    'facilities' => $facilities,
+    'amenities' => $amenities,
+    'localoverseas' => $form_state['values']['locover'],
+    'city' => $form_state['values']['city'],
+    'filename' => $filename,
   ))
-  ->condition('id', 1, '=')
   ->execute();
+
   drupal_set_message('Your change has been saved!');
+  $form_state['redirect'] = 'admin/red-elephant/projects';
 }
 
 
+function edit_projects_form($form, &$form_state, $locover, $id) {
+  $result = db_select('projects', 'p')
+          ->fields('p')
+          ->condition('id', $id, '=')
+          ->execute()
+          ->fetchAll();
 
+  $filename = explode("/", $result[0]->filename);
 
+  for ($i=0; $i<count($filename); $i++) {
+    $banner[$i] = '<img src="'. file_create_url('public://') . $filename[$i] .'" style="height: 250px; width: 700px;">';
+  }
 
+  $form['projects'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Projects'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  $form['id'] = array(
+    '#type' => 'value',
+    '#value' => $id,
+  );
+
+  $form['locover'] = array(
+    '#type' => 'value',
+    '#value' => $locover,
+  );
+
+  $form['filename'] = array(
+    '#type' => 'value',
+    '#value' => $result[0]->filename,
+  );
+
+  $form['projects']['file'] = array(
+    '#type' => 'file',
+    '#title' => 'Image',
+  );
+
+  if (isset($banner[0])) {
+    $form['projects']['image'] = array(
+      '#markup' => $banner[0],
+    );
+  }
+
+  $form['projects']['file2'] = array(
+    '#type' => 'file',
+    '#title' => 'Image2',
+  );
+
+  if (isset($banner[1])) {
+    $form['projects']['image2'] = array(
+      '#markup' => $banner[1],
+    );
+  }
+
+  $form['projects']['file3'] = array(
+    '#type' => 'file',
+    '#title' => 'Image3',
+  );
+
+  if (isset($banner[2])) {
+    $form['projects']['image3'] = array(
+      '#markup' => $banner[2],
+    );
+  }
+
+  $form['projects']['file4'] = array(
+    '#type' => 'file',
+    '#title' => 'Image4',
+  );
+
+  if (isset($banner[3])) {
+    $form['projects']['image4'] = array(
+      '#markup' => $banner[3],
+    );
+  }
+
+  $form['projects']['file5'] = array(
+    '#type' => 'file',
+    '#title' => 'Image5',
+  );
+
+  if (isset($banner[4])) {
+    $form['projects']['image5'] = array(
+      '#markup' => $banner[4],
+    );
+  }
+
+  $form['projects']['file6'] = array(
+    '#type' => 'file',
+    '#title' => 'Image6',
+  );
+
+  if (isset($banner[5])) {
+    $form['projects']['image6'] = array(
+      '#markup' => $banner[5],
+    );
+  }
+
+  if ($locover == "local") {
+    $form['projects']['city'] = array(
+      '#type' => 'select',
+      '#title' => 'Local',
+      '#options' => array(
+        'Jakarta' => t('Jakarta'),
+        'Bandung' => t('Bandung'),
+        'Bali' => t('Bali'),
+      ),
+    );
+  }
+
+  else {
+    $form['projects']['city'] = array(
+      '#type' => 'select',
+      '#title' => 'Overseas',
+      '#options' => array(
+        'Singapore' => t('Singapore'),
+        'Malaysia' => t('Malaysia'),
+      ),
+    );
+  }
+
+  $form['projects']['title'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Title',
+    '#default_value' => $result[0]->title,
+  );
+
+  $form['projects']['project'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Project',
+    '#default_value' => $result[0]->project,
+  );
+
+  $form['projects']['location'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Location',
+    '#default_value' => $result[0]->location,
+  );
+
+  $form['projects']['type'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Type',
+    '#default_value' => $result[0]->type,
+  );
+
+  $form['projects']['size'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Size',
+    '#default_value' => $result[0]->size,
+  );
+
+  $form['projects']['facilities'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Facilities',
+    '#default_value' => $result[0]->facilities,
+  );
+
+  $form['projects']['amenities'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Amenities',
+    '#default_value' => $result[0]->amenities,
+  );
+
+  $form['projects']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Save',
+  );
+
+  $form['projects']['cancel'] = array(
+    '#type' => 'link',
+    '#title' => 'Cancel',
+    '#href' => 'admin/red-elephant/projects',
+  );
+
+  return $form;
+}
+
+function edit_projects_form_submit($form, &$form_state) {
+  $fn = explode("/", $form_state['values']['filename']); 
+  for ($i=0; $i<6; $i++) {
+    if (!isset($fn[$i])) {
+      $fn[$i] = "";
+    }
+  }
+
+  $file = file_save_upload('file', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file) {
+    if ($file = file_move($file, 'public://')) {
+      $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+      $form_state['storage']['file'] = $file;
+    }
+    else {
+      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      $filename = $fn[0];
+      return;
+    }
+  }
+  else {
+    $filename = $fn[0];
+  }
+
+  $file2 = file_save_upload('file2', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file2) {
+    if ($file2 = file_move($file2, 'public://')) {
+      $filename .= "/" . substr($file2->destination, strrpos($file2->destination, '/')+1);
+    }
+    else {
+      form_set_error('file2', t("Failed to write the uploaded file to the site's file folder."));
+      $filename .= "/" . $fn[1];
+      return;
+    }
+  }
+  else {
+    $filename .= "/" . $fn[1];
+  }
+
+  $file3 = file_save_upload('file3', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file3) {
+    if ($file3 = file_move($file3, 'public://')) {
+      $filename .= "/" . substr($file3->destination, strrpos($file3->destination, '/')+1);
+    }
+    else {
+      form_set_error('file3', t("Failed to write the uploaded file to the site's file folder."));
+      $filename .= "/" . $fn[2];
+      return;
+    }
+  }
+  else {
+    $filename .= "/" . $fn[2];
+  }
+
+  $file4 = file_save_upload('file4', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file4) {
+    if ($file4 = file_move($file4, 'public://')) {
+      $filename .= "/" . substr($file4->destination, strrpos($file4->destination, '/')+1);
+    }
+    else {
+      form_set_error('file4', t("Failed to write the uploaded file to the site's file folder."));
+      $filename .= "/" . $fn[3];
+      return;
+    }
+  }
+  else {
+    $filename .= "/" . $fn[3];
+  }
+
+  $file5 = file_save_upload('file5', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file5) {
+    if ($file5 = file_move($file5, 'public://')) {
+      $filename .= "/" . substr($file5->destination, strrpos($file5->destination, '/')+1);
+    }
+    else {
+      form_set_error('file5', t("Failed to write the uploaded file to the site's file folder."));
+      $filename .= "/" . $fn[4];
+      return;
+    }
+  }
+  else {
+    $filename .= "/" . $fn[4];
+  }
+
+  $file6 = file_save_upload('file6', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file6) {
+    if ($file6 = file_move($file6, 'public://')) {
+      $filename .= "/" . substr($file6->destination, strrpos($file6->destination, '/')+1);
+    }
+    else {
+      form_set_error('file6', t("Failed to write the uploaded file to the site's file folder."));
+      $filename .= "/" . $fn[5];
+      return;
+    }
+  }
+  else {
+    $filename .= "/" . $fn[5];
+  }
+
+  $facilities = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['facilities']);
+  $amenities = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['amenities']);
+
+  $result = db_update('projects')
+  ->fields(array(
+    'title' => strtoupper($form_state['values']['title']),
+    'project' => $form_state['values']['project'],
+    'location' => $form_state['values']['location'],
+    'type' => $form_state['values']['type'],
+    'size' => $form_state['values']['size'],
+    'facilities' => $facilities,
+    'amenities' => $amenities,
+    'localoverseas' => $form_state['values']['locover'],
+    'city' => $form_state['values']['city'],
+    'filename' => $filename,
+  ))
+  ->condition("id", $form_state['values']['id'], '=')
+  ->execute();
+
+  drupal_set_message('Your change has been saved!');
+  $form_state['redirect'] = 'admin/red-elephant/projects';
+}
+
+function delete_projects_form($form, &$form_state, $id) {
+  $form['id'] = array(
+    '#type' => 'value',
+    '#value' => $id,
+  );
+
+  return confirm_form(
+    $form,
+    t('Delete Services'),
+    'admin/red-elephant/services',
+    t('Are you sure you want to delete this ?'),
+    t('Delete'),
+    t('Cancel')
+  );
+}
+
+function delete_projects_form_submit($form, &$form_state) {
+  $result = db_delete('projects')
+  ->condition('id', $form_state['values']['id'], '=')
+  ->execute();
+
+  drupal_set_message('Succesfully deleted');
+  $form_state['redirect'] = 'admin/red-elephant/projects';
+}
 
 
 
@@ -401,6 +977,11 @@ function edit_services_form($form, &$form_state, $id) {
     '#value' => $id,
   );
 
+  $form['filename'] = array(
+    '#type' => 'value',
+    '#value' => $result[0]->filename,
+  );
+
   $form['services']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
@@ -495,7 +1076,6 @@ function edit_services_form_submit($form, &$form_state) {
   }
   else {
     $filename = $form_state['values']['filename'];
-    return;
   }
 
   $facilities = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['facilities']);
@@ -687,6 +1267,11 @@ function edit_news_form($form, &$form_state, $id) {
     '#value' => $id,
   );
 
+  $form['filename'] = array(
+    '#type' => 'value',
+    '#value' => $result[0]->filename,
+  );
+
   $form['news'] = array(
     '#type' => 'fieldset',
     '#title' => t('Edit News'),
@@ -758,7 +1343,6 @@ function edit_news_form_submit($form, &$form_state) {
   }
   else {
     $filename = $form_state['values']['filename'];
-    return;
   }
 
   $description = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['desc']);
@@ -767,7 +1351,7 @@ function edit_news_form_submit($form, &$form_state) {
     ->fields(array(
       'date' => $form_state['values']['date'],
       'title' => $form_state['values']['title'],
-      'description' => $form_state['values']['desc'],
+      'description' => $description,
       'filename' => $filename
     ))
     ->condition('id', $form_state['values']['id'] , '=')
@@ -807,6 +1391,51 @@ function delete_news_form_submit($form, &$form_state) {
 
 
 
+function contact_form() {
+  $header = array( 
+    array('data' => t('No')),
+    array('data' => t('Name')), 
+    array('data' => t('Email')), 
+    array('data' => t('Phone')),
+    array('data' => t('Address')),
+  ); 
+
+  $result = db_select('contact', 'c')
+  ->fields('c')
+  ->execute()
+  ->fetchAll();
+
+  $row = null;
+  foreach ($result as $i => $record) {
+    $no = $i+1;
+    $row[] = array(
+      array('data' => $no),
+      array('data' => $record->name),
+      array('data' => $record->email),
+      array('data' => $record->phone),
+      array('data' => $record->address),
+    );
+  }
+
+  $output = theme('table', array('header' => $header,
+                     'rows' => $row, 'empty' => t('Table has no row!'))) . theme('pager');
+  return $output;
+}
+
+function contact_form_submit() {
+  if ($_POST['name']) {
+    $result = db_insert('contact')
+    ->fields(array(
+      'name' => $_POST['name'],
+      'email' => $_POST['email'],
+      'phone' => $_POST['phone'],
+      'address' => $_POST['address'],
+    ))
+    ->execute();
+  }
+
+  drupal_goto('contact');
+}
 
 
 
@@ -831,20 +1460,18 @@ function aboutus_view() {
 }
 
 function projects_view() {
+  $projectid = "";
+  if (isset($_GET['projectid'])) {
+    $projectid = $_GET['projectid'];
+  }
   $result = db_select('projects', 'p')
         ->fields('p')
-        ->condition('id', 1, '=')
         ->execute()
         ->fetchAll();
 
 	return theme('projects', array(
-    'title' => $result[0]->title,
-    'project' => $result[0]->project,
-    'location' => $result[0]->location,
-    'type' => $result[0]->type,
-    'size' => $result[0]->size,
-    'facilities' => $result[0]->facilities,
-    'amenities' => $result[0]->amenities,
+    'projects' => $result,
+    'projectid' => $projectid,
   ));
 }
 
@@ -868,6 +1495,31 @@ function news_view() {
   return theme('news', array(
     'news' => $result,
   ));
+}
+
+function newsdetail_view($id) {
+  $result = db_select('news', 'n')
+    ->fields('n')
+    ->execute()
+    ->fetchAll();
+
+  foreach ($result as $i => $r) {
+    if ($r->id == $id) {
+      $next = "";
+      $previous = "";
+      if (isset($result[$i+1]->id)) {
+        $next = $result[$i+1]->id;
+      }
+      if (isset($result[$i-1]->id)) {
+        $previous = $result[$i-1]->id;
+      }
+      return theme('newsdetail', array(
+        'news' => $r,
+        'next' => $next,
+        'previous' => $previous
+      ));   
+    }
+  }
 }
 
 function contact_view() {
