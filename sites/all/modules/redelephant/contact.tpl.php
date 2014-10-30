@@ -1,3 +1,7 @@
+<script>
+document.getElementById("contact").classList.add("active");
+</script>
+
 <div class="row" style="margin-top: 30px">
   <div class="col-xs-4">
     <strong style="margin-bottom: 10px; font-size: 50px; color: red">HELLO THERE!</strong>

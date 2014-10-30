@@ -1,4 +1,16 @@
+<?php 
+function count_city ($city) {
+	$count = 0;
+	foreach($projects as $project) {
+		if ($project->city == "Jakarta") $count++;
+	}
+	return $count;
+}
+?>
+
 <script>
+document.getElementById("projects").classList.add("active");
+
 function get_projectid(projectid) {
   var xmlhttp;
   if (window.XMLHttpRequest){
@@ -21,12 +33,21 @@ function set_image(filepath) {
 }
 </script>
 
+<style type="text/css">
+.pager {
+	font-size: 70px; 
+	margin-top: 50px; 
+	cursor: pointer
+}
+</style>
 
 <div class="row" style="margin-top: 50px">
   <div class="col-xs-6">
 
   	<div class="col-xs-1" style="top: 190px; padding: 0">
-			<a style="font-size: 70px; margin-top: 50px"><</a>
+  		<?php if (count_city("Jakarta") <= 8) { ?>
+			<a class="pager"><</a>
+			<?php } ?>
 		</div>
 
     <div class="col-xs-10">
@@ -44,9 +65,9 @@ function set_image(filepath) {
 				  	<a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
 							<img src="<?php print file_create_url('public://') . $filename[0]; ?>" style="height: 100px">
 				    </a>
-				    <div class="caption">
-        			<p style="text-align: center">Lorem Ipsum</p>
-           	</div>
+				    <div class="caption" style="text-align: center">
+	    				<strong><?php print $project->title; ?></strong>
+         		</div>
 			  	</div>
 					<?php } } ?>  
 			  </div>
@@ -78,14 +99,14 @@ function set_image(filepath) {
 		</div>
 
   	<div class="col-xs-1" style="top: 190px; padding: 0">
-			<a style="font-size: 70px; margin-top: 50px">></a>
+			<a class="pager">></a>
 		</div>
   </div>
 
 
   <div class="col-xs-6">
   	<div class="col-xs-1" style="top: 190px; padding: 0">
-			<a style="font-size: 70px; margin-top: 50px"><</a>
+			<a class="pager"><</a>
 		</div>
 
     <div class="col-xs-10">
@@ -123,7 +144,7 @@ function set_image(filepath) {
 		</div>
 
   	<div class="col-xs-1" style="top: 190px; padding: 0">
-			<a style="font-size: 70px; margin-top: 50px">></a>
+			<a class="pager">></a>
 		</div>
   </div>
 </div>

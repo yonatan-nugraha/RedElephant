@@ -1,55 +1,52 @@
+<script>
+document.getElementById("services").classList.add("active");
 
+function set_image(id, filepath) {
+  document.getElementById(id).src = filepath;
+}
+</script>
 
-<?php foreach ($services as $service) { ?>
-<div class="row" style="color: #EDEDED">
-  <div class="col-xs-6" style="background-color: lightgrey; height: 300px">
+<?php foreach ($services as $id=>$service) { $filename = explode("/", $service->filename); ?>
+<div class="row" style="color: #EDEDED; border: 5px outset">
+  <div class="col-xs-6" style="background-color: lightgrey; min-height: 300px;">
 		<div class="row">
 			<div class="col-xs-9">
-				<img src="<?php print file_create_url('public://') . $service->filename; ?>" style="width: 400px; height: 250px; margin-top: 25px; margin-bottom: 25px; margin-left: 20px;">
+				<img id="<?php print $id; ?>" src="<?php print file_create_url('public://') . $filename[0]; ?>" style="width: 400px; height: 250px; margin-top: 25px; margin-bottom: 25px; margin-left: 20px; border: 5px ridge">
   		</div>
       <div class="col-xs-3">
-        <?php for ($i=0; $i<3; $i++) { ?>
+        <?php for ($i=0; $i<3; $i++) { if (isset($filename[$i])) { ?>
         <div class="row">
-          <img src="<?php print file_create_url('public://') . $service->filename; ?>" style="width: 100px; height: 65px; margin-top: 25px; margin-left: 20px;">
+          <img src="<?php print file_create_url('public://') . $filename[$i]; ?>" style="width: 100px; height: 65px; margin-top: 25px; margin-left: 20px; cursor: pointer; border: 5px ridge" onclick="set_image('<?php print $id . "','" . file_create_url('public://') . $filename[$i] ?>')">
         </div>
-        <?php } ?>
+        <?php } } ?>
       </div>
 		</div>
   </div>
 
-  <div class="col-xs-6" style="background-color: rgb( 72, 71, 72 ); height: 300px">
+  <div class="col-xs-6" style="background-color: rgb( 72, 71, 72 ); min-height: 300px">
   	<h4 style="margin-top: 25px; margin-bottom: 20px; font-size: 20px; font-weight: bold; color: #EDEDED"><?php print $service->title; ?></h4>
   	<div class="col-xs-6" style="padding: 0">
-  		<p>
-        <small>PROJECT</small><br>
-        <small><?php print $service->project; ?></small>
-      </p>
-      <p>
-  		  <small>LOCATION</small><br>
-        <small><?php print $service->location; ?></small>
-      </p>
-  		<p>
-        <small>AREA</small><br>
-        <small><?php print $service->area; ?></small>
-      </p>
-			<p>
-        <small>TYPE</small><br>
-        <small><?php print $service->type; ?></small>
-      </p>
+      <small>PROJECT</small><br/>
+      <small><?php print $service->project; ?></small><br/><br/>
+
+		  <small>LOCATION</small><br>
+      <small><?php print $service->location; ?></small><br/><br/>
+
+      <small>AREA</small><br>
+      <small><?php print $service->area; ?></small><br/><br/>
+
+      <small>TYPE</small><br>
+      <small><?php print $service->type; ?></small>
   	</div>
   	<div class="col-xs-6">
-  		<p>
-        <small>SIZE</small><br>
-        <small><?php print $service->size; ?></small><br>
-      </p>
-      <p>
-        <small>FACILITIES</small><br>
-        <small><?php print $service->facilities; ?></small><br>
-      </p>
-  		<p>
-        <small>FLOOR</small><br>
-        <small><?php print $service->floor; ?></small>
-      </p>
+      <small>SIZE</small><br/>
+      <small><?php print $service->size; ?></small><br/><br/>
+
+      <small>FACILITIES</small><br/>
+      <small><?php print $service->facilities; ?></small><br/><br/>
+
+      <small>FLOOR</small><br/>
+      <small><?php print $service->floor; ?></small>
   	</div>
 	</div>
 </div>

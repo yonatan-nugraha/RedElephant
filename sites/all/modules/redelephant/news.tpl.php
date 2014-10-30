@@ -1,3 +1,6 @@
+<script>
+document.getElementById("news").classList.add("active");
+</script>
 
 <div class="row" style="margin-top: 50px">
 
@@ -14,11 +17,11 @@
   		<div class="col-xs-7" style="height: 200px; background-color: lightgrey; padding: 0; ">
         <div class="col-xs-12" style="margin-top: 10px">
           <div class="col-xs-12">
-      			<h4 style="font-size: 15px; font-weight: bold"><?php print $n->date; ?></h4>
+      			<strong style="font-size: 15px; color:#000; font-weight: bold; border-bottom: 3px solid red;"><?php print $n->date; ?></strong>
       			<h4 style="font-size: 15px; font-weight: bold"><?php print $n->title; ?></h4>
           </div>
           <div class="col-xs-12" style="max-height: 100px; overflow: hidden;">
-    			  <strong><?php print $n->description; ?></strong>
+    			  <strong style="color: #000"><?php print $n->description; ?></strong>
           </div>
           <div class="col-xs-12">
             <strong>» »</strong>
