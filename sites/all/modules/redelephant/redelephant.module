@@ -24,6 +24,7 @@ function redelephant_menu() {
     'page arguments' => array('aboutus_form'),
     'access arguments' => array('red elephant custom settings'),
     'file' => 'redelephant.inc',
+    'weight' => 1,
     'type' => MENU_LOCAL_TASK
   );
 
@@ -33,6 +34,7 @@ function redelephant_menu() {
     'page callback' => 'projects_form',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'weight' => 2,
     'type' => MENU_LOCAL_TASK
   );
 
@@ -72,6 +74,7 @@ function redelephant_menu() {
     'page callback' => 'services_form',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'weight' => 3,
     'type' => MENU_LOCAL_TASK
   );
 
@@ -111,6 +114,7 @@ function redelephant_menu() {
     'page callback' => 'news_form',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'weight' => 4,
     'type' => MENU_LOCAL_TASK
   );
 
@@ -150,6 +154,7 @@ function redelephant_menu() {
     'page callback' => 'contact_form',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'weight' => 5,
     'type' => MENU_LOCAL_TASK
   );
 

@@ -9,13 +9,7 @@
  * About us Form
  */
 function aboutus_form($form, &$form_state) {
-  $result = db_select('about_us', 'a')
-          ->fields('a')
-          ->condition('id', 1, '=')
-          ->execute()
-          ->fetchAll();
-
-  $banner = '<img src="'. file_create_url('public://') . $result[0]->filename .'" style="height: 250px; width: 700px;">';
+  $banner = '<img src="'. file_create_url('public://') . variable_get('filename') .'" style="height: 250px; width: 700px;">';
 
 	$form['about_us'] = array(
 	  '#type' => 'fieldset',
@@ -26,7 +20,7 @@ function aboutus_form($form, &$form_state) {
 
   $form['filename'] = array(
     '#type' => 'value',
-    '#value' => $result[0]->filename,
+    '#value' => variable_get('filename'),
   );
 
   $form['about_us']['file'] = array(
@@ -36,7 +30,7 @@ function aboutus_form($form, &$form_state) {
     '#size' => 30,
   );
 
-  if ($result[0]->filename != "") {
+  if (variable_get('filename') != "") {
     $form['about_us']['image'] = array(
       '#markup' => $banner,
     );
@@ -45,13 +39,13 @@ function aboutus_form($form, &$form_state) {
 	$form['about_us']['left'] = array(
     '#type' => 'textarea',
     '#title' => t('Left description'),
-    '#default_value' => $result[0]->desc_left
+    '#default_value' => variable_get('desc_left')
   );
 
 	$form['about_us']['right'] = array(
     '#type' => 'textarea',
     '#title' => t('Right description'),
-    '#default_value' => $result[0]->desc_right
+    '#default_value' => variable_get('desc_right')
   );
 
   $form['about_us']['submit'] = array(
@@ -74,11 +68,8 @@ function aboutus_form_submit($form, &$form_state) {
   if ($file) {
     if ($file = file_move($file, 'public://')) {
       $filename = substr($file->destination, strrpos($file->destination, '/')+1);
-      /*
-      $form_state['storage']['file'] = $file;
       $file->status = FILE_STATUS_PERMANENT;
       file_save($file);
-      */
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -93,15 +84,11 @@ function aboutus_form_submit($form, &$form_state) {
   $desc_left = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['left']);
   $desc_right = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['right']);
 
-	$result = db_update('about_us')
-    ->fields(array(
-      'desc_left' => $desc_left,
-      'desc_right' => $desc_right,
-      'filename' => $filename,
-    ))
-    ->condition('id', 1, '=')
-    ->execute();
-    drupal_set_message('Your change has been saved!');
+  variable_set('desc_left', $desc_left);
+  variable_set('desc_right', $desc_right);
+  variable_set('filename', $filename);
+
+  drupal_set_message('Your change has been saved!');
 }
 
 
@@ -166,26 +153,26 @@ function projects_form() {
     ->execute()
     ->fetchAll();
 
-    $filename = explode("/", $result[0]->filename);
+    $filename = explode('/', $result[0]->filename);
 
     print '
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h2 style="margin-top: 0; color: red"><strong>'. $result[0]->title .'</strong></h2>
+            <h2 class="text-primary" style="margin-top: 0"><strong>'. $result[0]->title .'</strong></h2>
       </div>
       <div class="modal-footer">
         <div class="col-xs-4" style="padding: 0; text-align: left;">
-          <span style="color: red"><strong>PROJECT</span><br/> 
+          <span class="text-primary"><strong>PROJECT</span><br/> 
           <p>'. $result[0]->project .'</p>
-          <span style="color: red">LOCATION</span><br/>
+          <span class="text-primary">LOCATION</span><br/>
           <p>'. $result[0]->location .'</p>
-          <span style="color: red">TYPE</span><br/>
+          <span class="text-primary">TYPE</span><br/>
           <p>'. $result[0]->type .'</p>
-          <span style="color: red">SIZE</span><br/>
+          <span class="text-primary">SIZE</span><br/>
           <p>'. $result[0]->size .'</p>
-          <span style="color: red">FACILITIES</span><br/>
+          <span class="text-primary">FACILITIES</span><br/>
           <p>'. $result[0]->facilities .'</p>
-          <span style="color: red">AMENITIES</span><br/>
+          <span class="text-primary">AMENITIES</span><br/>
           <p>'. $result[0]->amenities .'</p></strong>
         </div>
         <div class="col-xs-8">
@@ -205,6 +192,108 @@ function projects_form() {
           </div>
         </div>
       </div>';
+    die();
+  }
+
+
+
+  if (isset($_GET['city'])) {
+    $project = db_select('projects', 'p')
+    ->fields('p')
+    ->condition('city', $_GET['city'], '=')
+    ->execute()
+    ->fetchAll();
+
+    if ($_GET['page'] > 0) {
+      print '
+        <div class="col-xs-1" style="top: 190px; padding: 0">
+          <a class="pager" onclick="click_prevnext(\'prev\')"><</a>
+        </div>';
+    }
+    else {
+         print '
+        <div class="col-xs-1" style="top: 130px; padding: 0">
+          <a class="pager btn btn-link disabled"><</a>
+        </div>';   
+    }
+      print '
+      <div class="col-xs-10">
+        <div id="city" style="display: none"></div>
+        <h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">LOCAL</h4>
+        <ul class="nav nav-tabs">';
+
+        $projects_list = db_select('projects_list', 'pl')
+        ->fields('pl')
+        ->condition('localoverseas', 'local', '=')
+        ->execute()
+        ->fetchAll();
+
+      foreach ($projects_list as $i => $pl) {
+        $result = db_select('projects', 'p')
+          ->fields('p')
+          ->condition('city', $pl->city, '=')
+          ->execute()
+          ->fetchAll();
+
+        if ($pl->city == $_GET['city']) {
+          print '
+          <li class="active"><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
+        } else {
+          print '
+          <li><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
+        }
+      }
+        print '
+        </ul>
+
+        <div id="myTabContent" class="tab-content">';
+      foreach ($projects_list as $i => $pl) {
+
+        if ($pl->city == $_GET['city']) {
+          print '
+          <div class="tab-pane fade active in" id="'. $pl->city .'">';
+        } else {
+          print '
+          <div class="tab-pane fade" id="'. $pl->city .'">';
+        }
+
+        $result = db_select('projects', 'p')
+        ->fields('p')
+        ->condition('city', $pl->city, '=')
+        ->range(8*$_GET['page'], 8)
+        ->execute()
+        ->fetchAll();
+
+          foreach ($result as $record) {
+            $filename = explode('/', $record->filename);
+            print '
+            <div class="col-xs-3" style="padding: 0" onclick="get_projectid(' . $record->id . ')">
+              <a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
+                <img src="'. file_create_url('public://') . $filename[0] .'" style="height: 100px">
+              </a>
+              <div class="caption">
+                <p style="text-align: center">' . $record->title .'</p>
+              </div>
+            </div>';
+          }
+          print '</div>';
+        }
+
+          print '
+        </div>
+      </div>';
+
+    if (count($project) > ($_GET['page']+1)*8) {
+      print '
+      <div class="col-xs-1" style="top: 190px; padding: 0">
+        <a class="pager" onclick="click_prevnext(\'next\')">></a>
+      </div>';
+    }
+    else {
+      print '<div class="col-xs-1" style="top: 130px; padding: 0">
+        <a class="pager btn btn-link disabled">></a>
+      </div>';    
+    }
     die();
   }
 
@@ -337,6 +426,8 @@ function add_projects_form_submit($form, &$form_state) {
   if ($file) {
     if ($file = file_move($file, 'public://')) {
       $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+      $file->status = FILE_STATUS_PERMANENT;
+      file_save($file);
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -352,6 +443,8 @@ function add_projects_form_submit($form, &$form_state) {
   if ($file2) {
     if ($file2 = file_move($file2, 'public://')) {
       $filename .= "/" . substr($file2->destination, strrpos($file2->destination, '/')+1);
+      $file2->status = FILE_STATUS_PERMANENT;
+      file_save($file2);
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -367,6 +460,8 @@ function add_projects_form_submit($form, &$form_state) {
   if ($file3) {
     if ($file3 = file_move($file3, 'public://')) {
       $filename .= "/" . substr($file3->destination, strrpos($file3->destination, '/')+1);
+      $file3->status = FILE_STATUS_PERMANENT;
+      file_save($file3);
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -382,6 +477,8 @@ function add_projects_form_submit($form, &$form_state) {
   if ($file4) {
     if ($file4 = file_move($file4, 'public://')) {
       $filename .= "/" . substr($file4->destination, strrpos($file4->destination, '/')+1);
+      $file4->status = FILE_STATUS_PERMANENT;
+      file_save($file4);
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -397,6 +494,8 @@ function add_projects_form_submit($form, &$form_state) {
   if ($file5) {
     if ($file5 = file_move($file5, 'public://')) {
       $filename .= "/" . substr($file5->destination, strrpos($file5->destination, '/')+1);
+      $file5->status = FILE_STATUS_PERMANENT;
+      file_save($file5);
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -412,6 +511,8 @@ function add_projects_form_submit($form, &$form_state) {
   if ($file6) {
     if ($file6 = file_move($file6, 'public://')) {
       $filename .= "/" . substr($file6->destination, strrpos($file6->destination, '/')+1);
+      $file6->status = FILE_STATUS_PERMANENT;
+      file_save($file6);
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -659,6 +760,8 @@ function edit_projects_form_submit($form, &$form_state) {
   if ($file2) {
     if ($file2 = file_move($file2, 'public://')) {
       $filename .= "/" . substr($file2->destination, strrpos($file2->destination, '/')+1);
+      $file2->status = FILE_STATUS_PERMANENT;
+      file_save($file2);
     }
     else {
       form_set_error('file2', t("Failed to write the uploaded file to the site's file folder."));
@@ -678,6 +781,8 @@ function edit_projects_form_submit($form, &$form_state) {
   if ($file3) {
     if ($file3 = file_move($file3, 'public://')) {
       $filename .= "/" . substr($file3->destination, strrpos($file3->destination, '/')+1);
+      $file3->status = FILE_STATUS_PERMANENT;
+      file_save($file3);
     }
     else {
       form_set_error('file3', t("Failed to write the uploaded file to the site's file folder."));
@@ -697,6 +802,8 @@ function edit_projects_form_submit($form, &$form_state) {
   if ($file4) {
     if ($file4 = file_move($file4, 'public://')) {
       $filename .= "/" . substr($file4->destination, strrpos($file4->destination, '/')+1);
+      $file4->status = FILE_STATUS_PERMANENT;
+      file_save($file4);
     }
     else {
       form_set_error('file4', t("Failed to write the uploaded file to the site's file folder."));
@@ -716,6 +823,8 @@ function edit_projects_form_submit($form, &$form_state) {
   if ($file5) {
     if ($file5 = file_move($file5, 'public://')) {
       $filename .= "/" . substr($file5->destination, strrpos($file5->destination, '/')+1);
+      $file5->status = FILE_STATUS_PERMANENT;
+      file_save($file5);
     }
     else {
       form_set_error('file5', t("Failed to write the uploaded file to the site's file folder."));
@@ -735,6 +844,8 @@ function edit_projects_form_submit($form, &$form_state) {
   if ($file6) {
     if ($file6 = file_move($file6, 'public://')) {
       $filename .= "/" . substr($file6->destination, strrpos($file6->destination, '/')+1);
+      $file6->status = FILE_STATUS_PERMANENT;
+      file_save($file6);
     }
     else {
       form_set_error('file6', t("Failed to write the uploaded file to the site's file folder."));
@@ -1152,6 +1263,8 @@ function edit_services_form_submit($form, &$form_state) {
   if ($file2) {
     if ($file2 = file_move($file2, 'public://')) {
       $filename .= "/" . substr($file2->destination, strrpos($file2->destination, '/')+1);
+      $file2->status = FILE_STATUS_PERMANENT;
+      file_save($file2);
     }
     else {
       form_set_error('file2', t("Failed to write the uploaded file to the site's file folder."));
@@ -1171,6 +1284,8 @@ function edit_services_form_submit($form, &$form_state) {
   if ($file3) {
     if ($file3 = file_move($file3, 'public://')) {
       $filename .= "/" . substr($file3->destination, strrpos($file3->destination, '/')+1);
+      $file3->status = FILE_STATUS_PERMANENT;
+      file_save($file3);
     }
     else {
       form_set_error('file3', t("Failed to write the uploaded file to the site's file folder."));
@@ -1329,17 +1444,11 @@ function add_news_form_submit($form, &$form_state) {
 
   if ($file) {
     if ($file = file_move($file, 'public://')) {
-      $form_state['storage']['file'] = $file;
-    }
-    else {
-      form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
+      $filename = substr($file->destination, strrpos($file->destination, '/')+1);
+      $file->status = FILE_STATUS_PERMANENT;
+      file_save($file);
     }
   }
-  else {
-    form_set_error('file', t('No file was uploaded.'));
-  }
-
-  $filename = substr($file->destination, strrpos($file->destination, '/')+1);
 
   $description = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['desc']);
 
@@ -1437,7 +1546,8 @@ function edit_news_form_submit($form, &$form_state) {
   if ($file) {
     if ($file = file_move($file, 'public://')) {
       $filename = substr($file->destination, strrpos($file->destination, '/')+1);
-      $form_state['storage']['file'] = $file;
+      $file->status = FILE_STATUS_PERMANENT;
+      file_save($file);
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
@@ -1550,16 +1660,10 @@ function contact_form_submit() {
   Implement Hook View form
  */
 function aboutus_view() {
-	$result = db_select('about_us', 'a')
-          ->fields('a')
-          ->condition('id', 1, '=')
-          ->execute()
-          ->fetchAll();
-
 	return theme('about-us', array(
-    'filename' => $result[0]->filename,
-    'desc_left' => $result[0]->desc_left,
-    'desc_right' => $result[0]->desc_right,
+    'filename' => variable_get('filename'),
+    'desc_left' => variable_get('desc_left'),
+    'desc_right' => variable_get('desc_right'),
   ));
 }
 

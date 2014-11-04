@@ -1,13 +1,3 @@
-<?php 
-function count_city ($city) {
-	$count = 0;
-	foreach($projects as $project) {
-		if ($project->city == "Jakarta") $count++;
-	}
-	return $count;
-}
-?>
-
 <script>
 document.getElementById("projects").classList.add("active");
 
@@ -15,7 +5,7 @@ function get_projectid(projectid) {
   var xmlhttp;
   if (window.XMLHttpRequest){
     xmlhttp = new XMLHttpRequest();
-  } else{
+  } else {
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
   }
 
@@ -28,9 +18,49 @@ function get_projectid(projectid) {
   xmlhttp.send();
 }
 
+function get_projects(city, page) {
+  var xmlhttp;
+  if (window.XMLHttpRequest){
+    xmlhttp = new XMLHttpRequest();
+  } else {
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function(){
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			document.getElementById("local").innerHTML = xmlhttp.responseText;
+    }
+  }
+  xmlhttp.open("GET", "admin/red-elephant/projects?city=" + city + "&page=" + page, true);
+  xmlhttp.send();
+}
+
+get_projects("Jakarta", 0);
+
+function click_prevnext(prevnext) {
+	if (prevnext == "next") {
+		var page = parseInt(document.getElementById("page").innerHTML) + 1;
+	}
+	else {
+		var page = parseInt(document.getElementById("page").innerHTML) - 1;
+	}
+	document.getElementById("page").innerHTML = page;
+
+	var city = document.getElementById("city").innerHTML;
+
+	get_projects(city, page);
+}
+
 function set_image(filepath) {
 	document.getElementById("pic").src = filepath;
 }
+
+function set_city(city) {
+	document.getElementById("city").innerHTML = city;
+	document.getElementById("page").innerHTML = 0;
+	get_projects(city, 0);
+}
+
 </script>
 
 <style type="text/css">
@@ -42,65 +72,9 @@ function set_image(filepath) {
 </style>
 
 <div class="row" style="margin-top: 50px">
-  <div class="col-xs-6">
-
-  	<div class="col-xs-1" style="top: 190px; padding: 0">
-  		<?php if (count_city("Jakarta") <= 8) { ?>
-			<a class="pager"><</a>
-			<?php } ?>
-		</div>
-
-    <div class="col-xs-10">
-	    <h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">LOCAL</h4>
-			<ul class="nav nav-tabs">
-			  <li class="active"><a href="#jakarta" data-toggle="tab">Jakarta</a></li>
-			  <li><a href="#bandung" data-toggle="tab">Bandung</a></li>
-			  <li><a href="#bali" data-toggle="tab">Bali</a></li>
-			</ul>
-			<div id="myTabContent" class="tab-content">
-			  <div class="tab-pane fade active in" id="jakarta">
-			  	<?php foreach ($projects as $i=>$project) { if ($i > 7) break; ?>
-			  	<?php if ($project->city == "Jakarta") { $filename = explode("/", $project->filename); ?>
-			  	<div class="col-xs-3" style="padding: 0" onclick="get_projectid(<?php print $project->id ?>)">
-				  	<a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
-							<img src="<?php print file_create_url('public://') . $filename[0]; ?>" style="height: 100px">
-				    </a>
-				    <div class="caption" style="text-align: center">
-	    				<strong><?php print $project->title; ?></strong>
-         		</div>
-			  	</div>
-					<?php } } ?>  
-			  </div>
-			  <div class="tab-pane fade" id="bandung">
-			  	<?php for ($i=0; $i<8; $i++) { ?>
-			  	<div class="col-xs-3" style="padding: 0">
-				  	<a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
-							<img src="<?php print drupal_get_path('module', 'redelephant') . '/images/bandung.jpg' ?>" style="height: 100px">
-				    </a>
-				    <div class="caption">
-        			<p style="text-align: center">Lorem Ipsum</p>
-           	</div>
-			  	</div>
-					<?php } ?>  
-			  </div>
-			  <div class="tab-pane fade" id="bali">
-			  	<?php for ($i=0; $i<8; $i++) { ?>
-			  	<div class="col-xs-3" style="padding: 0">
-				  	<a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
-							<img src="<?php print drupal_get_path('module', 'redelephant') . '/images/bali.jpg' ?>" style="height: 100px">
-				    </a>
-				    <div class="caption">
-        			<p style="text-align: center">Lorem Ipsum</p>
-           	</div>
-			  	</div>
-					<?php } ?>  
-			  </div>
-			</div>
-		</div>
-
-  	<div class="col-xs-1" style="top: 190px; padding: 0">
-			<a class="pager">></a>
-		</div>
+  <span id="city" style="display: none">Jakarta</span>
+  <span id="page" style="display: none">0</span>
+  <div class="col-xs-6" id="local">
   </div>
 
 
@@ -158,4 +132,3 @@ function set_image(filepath) {
     </div>
   </div>
 </div>
-
