@@ -1,12 +1,11 @@
-p {
-	font-family: 'DIN';
+
+html, body {
+  height: 100%;
 }
 
-.footer {
-  position: absolute;
-  right: 10%;
-  bottom: 0;
-  left: 10%;
-  padding: 1rem;
-  text-align: center;
+#wrapper {
+  min-height: 97%;
+  height: auto;
+  margin: 0 auto -50px;
+  padding: 0 0 60px;
 }

@@ -1,3 +1,6 @@
+<script>
+document.getElementById("contact").classList.add("active");
+</script>
 
 <div class="row" style="margin-top: 30px">
   <div class="col-xs-4">
@@ -13,20 +16,20 @@
 
 <div class="row">
   <div class="col-xs-4">
-		<form role="form">
+		<form role="form" id="myForm" action="admin/red-elephant/contact/submit" method="post" onsubmit="return alert('Thank you for taking your time to fill this form!');">
 		  <div class="form-group">
-		    <input type="text" class="form-control" id="name" placeholder="Name">
+		    <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
 		  </div>
 		  <div class="form-group">
-		    <input type="email" class="form-control" id="email" placeholder="Email">
+		    <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
 		  </div>
 		  <div class="form-group">
-		    <input type="text" class="form-control" id="phone" placeholder="Phone">
+		    <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" required>
 		  </div>
 		  <div class="form-group">
-		  	<textarea class="form-control" rows="5" id="address" placeholder="Address"></textarea>
+		  	<textarea class="form-control" rows="5" id="address" name="address" placeholder="Address" required></textarea>
 		  </div>
-		  <button type="submit" class="btn btn-default">Submit</button>
+		  <button type="submit" class="btn btn-default pull-right">Submit</button>
 		</form>
   </div>
   <div class="col-xs-1" style="min-height: 300px; border-right: solid 2px">
