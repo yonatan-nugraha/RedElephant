@@ -5,6 +5,7 @@
  * @since 2014-10-21
  */
 
+<<<<<<< HEAD
 /**
  * About us Form
  */
@@ -1666,6 +1667,8 @@ function contact_form_submit() {
 
 
 
+=======
+>>>>>>> yonatan-branch
 
 /*
   Implement Hook View form

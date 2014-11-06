@@ -6,6 +6,18 @@
  */
 
 /**
+ * Implements hook_permission().
+ */
+function redelephant_permission() {
+  return array(
+    'red elephant custom settings' => array(
+      'title' => t('Administer Red Elephant'),
+      'description' => t('Administer red elephant.'),
+    ),
+  );
+}
+
+/**
  * Implements hook_menu().
  */
 function redelephant_menu() {
@@ -23,17 +35,57 @@ function redelephant_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('aboutus_form'),
     'access arguments' => array('red elephant custom settings'),
-    'file' => 'redelephant.inc',
+    'file' => 'redelephant.aboutus.inc',
     'weight' => 1,
     'type' => MENU_LOCAL_TASK
+  );
+
+  $items['admin/red-elephant/projects_list'] = array(
+    'title' => 'Projects List',
+    'description' => 'Custom settings for projects list page',
+    'page callback' => 'projects_list_form',
+    'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
+    'weight' => 1,
+    'type' => MENU_LOCAL_TASK
+  );
+
+  $items['admin/red-elephant/projects_list/add/%'] = array(
+    'title' => 'Add Projects List',
+    'description' => 'Custom settings for projects list page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('add_projects_list_form', 4),
+    'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/red-elephant/projects_list/edit/%'] = array(
+    'title' => 'Edit Projects List',
+    'description' => 'Custom settings for projects list page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('edit_projects_list_form', 4),
+    'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
+    'type' => MENU_CALLBACK
+  );
+
+  $items['admin/red-elephant/projects_list/delete/%'] = array(
+    'title' => 'Delete Projects List',
+    'description' => 'Custom settings for projects list page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('delete_projects_list_form', 4),
+    'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
+    'type' => MENU_CALLBACK
   );
 
 	$items['admin/red-elephant/projects'] = array(
     'title' => 'Projects',
     'description' => 'Custom settings for projects page',
     'page callback' => 'projects_form',
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
     'weight' => 2,
     'type' => MENU_LOCAL_TASK
   );
@@ -43,8 +95,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for projects page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('add_projects_form', 4),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -53,8 +105,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for projects page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('edit_projects_form', 4, 5),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -63,8 +115,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for projects page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('delete_projects_form', 4),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.projects.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -72,8 +124,8 @@ function redelephant_menu() {
     'title' => 'Services',
     'description' => 'Custom settings for services page',
     'page callback' => 'services_form',
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.services.inc',
     'weight' => 3,
     'type' => MENU_LOCAL_TASK
   );
@@ -83,8 +135,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for services page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('add_services_form'),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.services.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -93,8 +145,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for services page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('edit_services_form', 4),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.services.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -103,8 +155,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for services page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('delete_services_form', 4),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.services.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -112,8 +164,8 @@ function redelephant_menu() {
     'title' => 'News',
     'description' => 'Custom settings for news page',
     'page callback' => 'news_form',
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.news.inc',
     'weight' => 4,
     'type' => MENU_LOCAL_TASK
   );
@@ -123,8 +175,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for news page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('add_news_form'),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.news.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -133,8 +185,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for news page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('edit_news_form', 4),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.news.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -143,8 +195,8 @@ function redelephant_menu() {
     'description' => 'Custom settings for news page',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('delete_news_form', 4),
-    'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.news.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -154,8 +206,20 @@ function redelephant_menu() {
     'page callback' => 'contact_form',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.contact.inc',
     'weight' => 5,
     'type' => MENU_LOCAL_TASK
+  );
+
+  $items['admin/red-elephant/contact/delete/%'] = array(
+    'title' => 'Delete Contact',
+    'description' => 'Custom settings for contact page',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('delete_contact_form', 4),
+    'file' => 'redelephant.inc',
+    'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.contact.inc',
+    'type' => MENU_CALLBACK
   );
 
   $items['admin/red-elephant/contact/submit'] = array(
@@ -164,6 +228,7 @@ function redelephant_menu() {
     'page callback' => 'contact_form_submit',
     'file' => 'redelephant.inc',
     'access arguments' => array('red elephant custom settings'),
+    'file' => 'redelephant.contact.inc',
     'type' => MENU_CALLBACK
   );
 
@@ -216,39 +281,47 @@ function redelephant_menu() {
  * Implement hook_theme().
  */
 function redelephant_theme() {
+  $theme_path = drupal_get_path('module', 'redelephant') . '/templates';
+
   return array(
     'about-us' => array(
       'template' => 'about-us',
+      'path' => $theme_path,
       'variables' => array(
         'data' => NULL,
       )
     ),
     'projects' => array(
       'template' => 'projects',
+      'path' => $theme_path,
       'variables' => array(
         'data' => NULL,
       )
     ),
     'services' => array(
       'template' => 'services',
+      'path' => $theme_path,
       'variables' => array(
         'data' => NULL,
       )
     ),
     'news' => array(
       'template' => 'news',
+      'path' => $theme_path,
       'variables' => array(
         'data' => NULL,
       )
     ),
     'newsdetail' => array(
       'template' => 'newsdetail',
+      'path' => $theme_path,
       'variables' => array(
         'data' => NULL,
       )
     ),
     'contact' => array(
       'template' => 'contact',
+      'path' => $theme_path,
       'variables' => array(
         'data' => NULL,
       )
