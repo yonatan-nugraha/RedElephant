@@ -246,6 +246,13 @@ function redelephant_menu() {
     'file' => 'redelephant.inc',
   );
 
+  $items['projects/show_projects'] = array(
+    'page callback' => 'show_projects', 
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'redelephant.projects.inc',
+  );
+
   $items['services'] = array(
     'page callback' => 'services_view', 
     'access callback' => TRUE,

@@ -5,13 +5,13 @@ global $user;
 <div id="wrapper">
 
   <div id="header">
-    <div class="container">
+    <div class="container container-header">
 	    <div class="navbar" role="navigation">
   		  <div class="collapse navbar-collapse" style="padding: 0">
           <ul class="nav navbar-nav">
             <li>
               <a href="<?php print $front_page;?>">
-                <img src="<?php print $logo; ?>" alt="<?php print $site_name;?>" style="height: 35px; width: 200px;" />
+                <img src="<?php print $logo; ?>" alt="<?php print $site_name;?>" style="height: 40px; width: 210px;" />
               </a>
             </li>
           </ul>
@@ -39,7 +39,7 @@ global $user;
 	
 
   <div id="content">
-    <div class="container">
+    <div class="container container-content">
       <?php print render($page['content']); ?>
     </div>
   </div>
@@ -47,7 +47,7 @@ global $user;
 </div>      
 
 <div id="footer">  
-  <div class="container">    
+  <div class="container container-footer">    
     <?php if ($page['footer']): ?>    
       <?php print render($page['footer']); ?>
     <?php endif; ?> 

@@ -232,157 +232,6 @@ function projects_form() {
     );
   }
 
-  if (isset($_GET['projectid'])) {
-    $result = db_select('projects', 'p')
-    ->fields('p')
-    ->condition('id', $_GET['projectid'], '=')
-    ->execute()
-    ->fetchAll();
-
-    $filename = explode('/', $result[0]->filename);
-
-    print '
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h2 class="text-primary" style="margin-top: 0"><strong>'. $result[0]->title .'</strong></h2>
-      </div>
-      <div class="modal-footer">
-        <div class="col-xs-4" style="padding: 0; text-align: left;">
-          <span class="text-primary"><strong>PROJECT</span><br/> 
-          <p>'. $result[0]->project .'</p>
-          <span class="text-primary">LOCATION</span><br/>
-          <p>'. $result[0]->location .'</p>
-          <span class="text-primary">TYPE</span><br/>
-          <p>'. $result[0]->type .'</p>
-          <span class="text-primary">SIZE</span><br/>
-          <p>'. $result[0]->size .'</p>
-          <span class="text-primary">FACILITIES</span><br/>
-          <p>'. $result[0]->facilities .'</p>
-          <span class="text-primary">AMENITIES</span><br/>
-          <p>'. $result[0]->amenities .'</p></strong>
-        </div>
-        <div class="col-xs-8">
-          <div class="row" style="margin-bottom: 10px">
-            <img id="pic" src="'. file_create_url('public://') . $filename[0] .'" style="width: 370px; height: 200px; border: 5px ridge">
-          </div>
-        <div class="row">';
-    for ($i=0; $i<count($filename); $i++) {
-      if ($filename[$i] != "") {
-      print '
-            <div class="col-xs-2" style="padding-left: 0; cursor: pointer" onclick="set_image('. "'" . file_create_url('public://') . $filename[$i] . "'" .')">
-              <img src="'. file_create_url('public://') . $filename[$i] .'" style="width: 55px; height: 55px; border: 5px ridge">
-            </div>';
-      }
-    }
-    print '
-          </div>
-        </div>
-      </div>';
-    die();
-  }
-
-
-
-  if (isset($_GET['city'])) {
-    $project = db_select('projects', 'p')
-    ->fields('p')
-    ->condition('city', $_GET['city'], '=')
-    ->execute()
-    ->fetchAll();
-
-    if ($_GET['page'] > 0) {
-      print '
-        <div class="col-xs-1" style="top: 190px; padding: 0">
-          <a class="pager" onclick="click_prevnext(\'prev\')"><</a>
-        </div>';
-    }
-    else {
-         print '
-        <div class="col-xs-1" style="top: 130px; padding: 0">
-          <a class="pager btn btn-link disabled"><</a>
-        </div>';   
-    }
-      print '
-      <div class="col-xs-10">
-        <div id="city" style="display: none"></div>
-        <h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">LOCAL</h4>
-        <ul class="nav nav-tabs">';
-
-      $projects_list = db_select('projects_list', 'pl')
-        ->fields('pl')
-        ->condition('localoverseas', 'local', '=')
-        ->execute()
-        ->fetchAll();
-
-      foreach ($projects_list as $i => $pl) {
-        $result = db_select('projects', 'p')
-          ->fields('p')
-          ->condition('city', $pl->city, '=')
-          ->execute()
-          ->fetchAll();
-
-        if ($pl->city == $_GET['city']) {
-          print '
-          <li class="active"><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
-        } else {
-          print '
-          <li><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
-        }
-      }
-        print '
-        </ul>
-
-        <div id="myTabContent" class="tab-content">';
-      foreach ($projects_list as $i => $pl) {
-
-        if ($pl->city == $_GET['city']) {
-          print '
-          <div class="tab-pane fade active in" id="'. $pl->city .'">';
-        } else {
-          print '
-          <div class="tab-pane fade" id="'. $pl->city .'">';
-        }
-
-        $result = db_select('projects', 'p')
-        ->fields('p')
-        ->condition('city', $pl->city, '=')
-        ->range(8*$_GET['page'], 8)
-        ->execute()
-        ->fetchAll();
-
-          foreach ($result as $record) {
-            $filename = explode('/', $record->filename);
-            print '
-            <div class="col-xs-3" style="padding: 0" onclick="get_projectid(' . $record->id . ')">
-              <a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
-                <img src="'. file_create_url('public://') . $filename[0] .'" style="height: 100px">
-              </a>
-              <div class="caption">
-                <p style="text-align: center">' . $record->title .'</p>
-              </div>
-            </div>';
-          }
-          print '</div>';
-        }
-
-          print '
-        </div>
-      </div>';
-
-    if (count($project) > ($_GET['page']+1)*8) {
-      print '
-      <div class="col-xs-1" style="top: 190px; padding: 0">
-        <a class="pager" onclick="click_prevnext(\'next\')">></a>
-      </div>';
-    }
-    else {
-      print '<div class="col-xs-1" style="top: 130px; padding: 0">
-        <a class="pager btn btn-link disabled">></a>
-      </div>';    
-    }
-    die();
-  }
-
   $output .= theme('table', array('header' => $header,
                      'rows' => $row, 'empty' => t('Table has no row!')));
   $output .= theme('pager', array('tags' => array()));
@@ -646,8 +495,8 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
           ->fetchAll();
 
   $city_array = array();
-  foreach($result as $res) {
-    $city_array[$res->city] = $res->city;
+  foreach($projects_list as $pl) {
+    $city_array[$pl->city] = $pl->city;
   }
 
   $result = db_select('projects', 'p')
@@ -1005,4 +854,157 @@ function delete_projects_form_submit($form, &$form_state) {
 
   drupal_set_message('Succesfully deleted');
   $form_state['redirect'] = 'admin/red-elephant/projects';
+}
+
+function show_projects() {
+    if (isset($_GET['projectid'])) {
+    $result = db_select('projects', 'p')
+    ->fields('p')
+    ->condition('id', $_GET['projectid'], '=')
+    ->execute()
+    ->fetchAll();
+
+    $filename = explode('/', $result[0]->filename);
+
+    print '
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h2 class="text-primary" style="margin-top: 0"><strong>'. $result[0]->title .'</strong></h2>
+      </div>
+      <div class="modal-footer">
+        <div class="col-xs-4" style="padding: 0; text-align: left;">
+          <span class="text-primary"><strong>PROJECT</span><br/> 
+          <p>'. $result[0]->project .'</p>
+          <span class="text-primary">LOCATION</span><br/>
+          <p>'. $result[0]->location .'</p>
+          <span class="text-primary">TYPE</span><br/>
+          <p>'. $result[0]->type .'</p>
+          <span class="text-primary">SIZE</span><br/>
+          <p>'. $result[0]->size .'</p>
+          <span class="text-primary">FACILITIES</span><br/>
+          <p>'. $result[0]->facilities .'</p>
+          <span class="text-primary">AMENITIES</span><br/>
+          <p>'. $result[0]->amenities .'</p></strong>
+        </div>
+        <div class="col-xs-8">
+          <div class="row" style="margin-bottom: 10px">
+            <img id="pic" src="'. file_create_url('public://') . $filename[0] .'" style="width: 370px; height: 200px; border: 5px ridge">
+          </div>
+        <div class="row">';
+    for ($i=0; $i<count($filename); $i++) {
+      if ($filename[$i] != "") {
+      print '
+            <div class="col-xs-2" style="padding-left: 0; cursor: pointer" onclick="set_image('. "'" . file_create_url('public://') . $filename[$i] . "'" .')">
+              <img src="'. file_create_url('public://') . $filename[$i] .'" style="width: 55px; height: 55px; border: 5px ridge">
+            </div>';
+      }
+    }
+    print '
+          </div>
+        </div>
+      </div>';
+    die();
+  }
+
+
+
+  if (isset($_GET['city'])) {
+    $project = db_select('projects', 'p')
+    ->fields('p')
+    ->condition('city', $_GET['city'], '=')
+    ->execute()
+    ->fetchAll();
+
+    if ($_GET['page'] > 0) {
+      print '
+        <div class="col-xs-1" style="top: 190px; padding: 0">
+          <a class="pager" onclick="click_prevnext(\'prev\')"><</a>
+        </div>';
+    }
+    else {
+         print '
+        <div class="col-xs-1" style="top: 130px; padding: 0">
+          <a class="pager btn btn-link disabled"><</a>
+        </div>';   
+    }
+      print '
+      <div class="col-xs-10">
+        <div id="city" style="display: none"></div>
+        <h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">LOCAL</h4>
+        <ul class="nav nav-tabs">';
+
+      $projects_list = db_select('projects_list', 'pl')
+        ->fields('pl')
+        ->condition('localoverseas', 'local', '=')
+        ->execute()
+        ->fetchAll();
+
+      foreach ($projects_list as $i => $pl) {
+        $result = db_select('projects', 'p')
+          ->fields('p')
+          ->condition('city', $pl->city, '=')
+          ->execute()
+          ->fetchAll();
+
+        if ($pl->city == $_GET['city']) {
+          print '
+          <li class="active"><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
+        } else {
+          print '
+          <li><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
+        }
+      }
+        print '
+        </ul>
+
+        <div id="myTabContent" class="tab-content">';
+      foreach ($projects_list as $i => $pl) {
+
+        if ($pl->city == $_GET['city']) {
+          print '
+          <div class="tab-pane fade active in" id="'. $pl->city .'">';
+        } else {
+          print '
+          <div class="tab-pane fade" id="'. $pl->city .'">';
+        }
+
+        $result = db_select('projects', 'p')
+        ->fields('p')
+        ->condition('city', $pl->city, '=')
+        ->range(8*$_GET['page'], 8)
+        ->execute()
+        ->fetchAll();
+
+          foreach ($result as $record) {
+            $filename = explode('/', $record->filename);
+            print '
+            <div class="col-xs-3" style="padding: 0" onclick="get_projectid(' . $record->id . ')">
+              <a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
+                <img src="'. file_create_url('public://') . $filename[0] .'" style="height: 80px">
+              </a>
+              <div class="caption">
+                <p style="text-align: center">' . $record->title .'</p>
+              </div>
+            </div>';
+          }
+          print '</div>';
+        }
+
+          print '
+        </div>
+      </div>';
+
+    if (count($project) > ($_GET['page']+1)*8) {
+      print '
+      <div class="col-xs-1" style="top: 190px; padding: 0">
+        <a class="pager" onclick="click_prevnext(\'next\')">></a>
+      </div>';
+    }
+    else {
+      print '<div class="col-xs-1" style="top: 130px; padding: 0">
+        <a class="pager btn btn-link disabled">></a>
+      </div>';    
+    }
+    die();
+  }
 }

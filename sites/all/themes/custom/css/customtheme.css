@@ -9,3 +9,15 @@ html, body {
   margin: 0 auto -50px;
   padding: 0 0 60px;
 }
+
+.container-header {
+	max-width: 950px;
+}
+
+.container-content {
+	max-width: 950px;
+}
+
+.container-footer {
+	max-width: 950px;
+}

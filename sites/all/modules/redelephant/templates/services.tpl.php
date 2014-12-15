@@ -11,12 +11,12 @@ function set_image(id, filepath) {
   <div class="col-xs-6" style="background-color: lightgrey; min-height: 300px;">
 		<div class="row">
 			<div class="col-xs-9">
-				<img id="<?php print $id; ?>" src="<?php print file_create_url('public://') . $filename[0]; ?>" style="width: 400px; height: 250px; margin-top: 25px; margin-bottom: 25px; margin-left: 20px; border: 5px ridge">
+				<img id="<?php print $id; ?>" src="<?php print file_create_url('public://') . $filename[0]; ?>" style="width: 330px; height: 250px; margin-top: 25px; margin-bottom: 25px; margin-left: 20px; border: 5px ridge">
   		</div>
       <div class="col-xs-3">
         <?php for ($i=0; $i<3; $i++) { if (isset($filename[$i])) { ?>
         <div class="row">
-          <img src="<?php print file_create_url('public://') . $filename[$i]; ?>" style="width: 100px; height: 65px; margin-top: 25px; margin-left: 20px; cursor: pointer; border: 5px ridge" onclick="set_image('<?php print $id . "','" . file_create_url('public://') . $filename[$i] ?>')">
+          <img src="<?php print file_create_url('public://') . $filename[$i]; ?>" style="width: 90px; height: 65px; margin-top: 25px; margin-left: 20px; cursor: pointer; border: 5px ridge" onclick="set_image('<?php print $id . "','" . file_create_url('public://') . $filename[$i] ?>')">
         </div>
         <?php } } ?>
       </div>

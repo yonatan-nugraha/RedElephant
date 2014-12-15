@@ -14,7 +14,7 @@ function get_projectid(projectid) {
 			document.getElementById("project").innerHTML = xmlhttp.responseText;
     }
   }
-  xmlhttp.open("GET", "admin/red-elephant/projects?projectid=" + projectid, true);
+  xmlhttp.open("GET", "projects/show_projects?projectid=" + projectid, true);
   xmlhttp.send();
 }
 
@@ -31,7 +31,7 @@ function get_projects(city, page) {
 			document.getElementById("local").innerHTML = xmlhttp.responseText;
     }
   }
-  xmlhttp.open("GET", "admin/red-elephant/projects?city=" + city + "&page=" + page, true);
+  xmlhttp.open("GET", "projects/show_projects?city=" + city + "&page=" + page, true);
   xmlhttp.send();
 }
 
@@ -94,7 +94,7 @@ function set_city(city) {
 			  	<?php for ($i=0; $i<8; $i++) { ?>
 			  	<div class="col-xs-3" style="padding: 0">
 				  	<a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
-							<img src="<?php print drupal_get_path('module', 'redelephant') . '/images/singapore.jpg' ?>" style="height: 100px">
+							<img src="<?php print drupal_get_path('module', 'redelephant') . '/images/singapore.jpg' ?>" style="height: 80px">
 				    </a>
 				    <div class="caption">
         			<p style="text-align: center">Lorem Ipsum</p>

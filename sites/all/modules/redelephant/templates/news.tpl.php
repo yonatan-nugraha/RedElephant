@@ -14,7 +14,7 @@ document.getElementById("news").classList.add("active");
   		<div class="col-xs-5" style="padding-right: 0">
           <img src="<?php print file_create_url('public://') . $n->filename; ?>" style="width: 350px; height: 200px;">
   		</div>
-  		<div class="col-xs-7" style="height: 200px; background-color: lightgrey; padding: 0; ">
+  		<div class="col-xs-7" style="height: 200px; background-color: #bcbcbc; padding: 0; ">
         <div class="col-xs-12" style="margin-top: 10px">
           <div class="col-xs-12">
       			<strong style="font-size: 15px; color:#000; font-weight: bold; border-bottom: 3px solid red;"><?php print $n->date; ?></strong>
