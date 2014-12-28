@@ -186,7 +186,8 @@ function delete_projects_list_form_submit($form, &$form_state) {
  */
 
 function projects_form() {
-  $output = '<a href="projects/add/local">Add Projects here</a><br/>';
+  $output = '<a href="projects/add/local">Add Local Projects here</a><br/>';
+  $output .= '<a href="projects/add/overseas">Add Overseas Projects List here</a><br/>';
 
   $header = array( 
     array('data' => t('No')),
@@ -909,11 +910,12 @@ function show_projects() {
 
 
   if (isset($_GET['city'])) {
-    $project = db_select('projects', 'p')
-    ->fields('p')
-    ->condition('city', $_GET['city'], '=')
-    ->execute()
-    ->fetchAll();
+
+      $firstcity = db_select('projects', 'p')
+        ->fields('p')
+        ->condition('localoverseas', $_GET['city'], '=')
+        ->execute()
+        ->fetchAll();
 
     if ($_GET['page'] > 0) {
       print '
@@ -935,7 +937,7 @@ function show_projects() {
 
       $projects_list = db_select('projects_list', 'pl')
         ->fields('pl')
-        ->condition('localoverseas', 'local', '=')
+        ->condition('localoverseas', $_GET['city'], '=')
         ->execute()
         ->fetchAll();
 
@@ -946,7 +948,7 @@ function show_projects() {
           ->execute()
           ->fetchAll();
 
-        if ($pl->city == $_GET['city']) {
+        if ($pl->city == $firstcity[0]->city) {
           print '
           <li class="active"><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
         } else {
@@ -960,7 +962,7 @@ function show_projects() {
         <div id="myTabContent" class="tab-content">';
       foreach ($projects_list as $i => $pl) {
 
-        if ($pl->city == $_GET['city']) {
+        if ($pl->city == $firstcity[0]->city) {
           print '
           <div class="tab-pane fade active in" id="'. $pl->city .'">';
         } else {

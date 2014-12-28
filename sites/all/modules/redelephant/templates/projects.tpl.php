@@ -18,7 +18,7 @@ function get_projectid(projectid) {
   xmlhttp.send();
 }
 
-function get_projects(city, page) {
+function get_projects_local(city, page) {
   var xmlhttp;
   if (window.XMLHttpRequest){
     xmlhttp = new XMLHttpRequest();
@@ -35,7 +35,25 @@ function get_projects(city, page) {
   xmlhttp.send();
 }
 
-get_projects("Jakarta", 0);
+function get_projects_overseas(city, page) {
+  var xmlhttp;
+  if (window.XMLHttpRequest){
+    xmlhttp = new XMLHttpRequest();
+  } else {
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+
+  xmlhttp.onreadystatechange = function(){
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+			document.getElementById("overseas").innerHTML = xmlhttp.responseText;
+    }
+  }
+  xmlhttp.open("GET", "projects/show_projects?city=" + city + "&page=" + page, true);
+  xmlhttp.send();
+}
+
+get_projects_local("local", 0);
+get_projects_overseas("overseas", 0);
 
 function click_prevnext(prevnext) {
 	if (prevnext == "next") {
@@ -74,15 +92,16 @@ function set_city(city) {
 <div class="row" style="margin-top: 50px">
   <span id="city" style="display: none">Jakarta</span>
   <span id="page" style="display: none">0</span>
+
+  <span id="city" style="display: none">Jakarta</span>
+  <span id="page" style="display: none">0</span>
   <div class="col-xs-6" id="local">
   </div>
 
 
-  <div class="col-xs-6">
-  	<div class="col-xs-1" style="top: 190px; padding: 0">
-			<a class="pager"><</a>
-		</div>
-
+  <div class="col-xs-6" id="overseas">
+  </div>
+<!--
     <div class="col-xs-10">
     	<h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">OVERSEAS</h4>
 			<ul class="nav nav-tabs">
@@ -116,10 +135,7 @@ function set_city(city) {
 			  </div>
 		  </div>
 		</div>
-
-  	<div class="col-xs-1" style="top: 190px; padding: 0">
-			<a class="pager">></a>
-		</div>
+	-->
   </div>
 </div>
 
