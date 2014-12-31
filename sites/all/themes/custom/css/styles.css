@@ -8409,12 +8409,48 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* line 175, ../sass/_main.scss */
+#content .news-detail h2 {
+  color: #ff0000;
+  font-size: 24px;
+}
+/* line 179, ../sass/_main.scss */
+#content .news-detail h4 {
+  font-size: 14px;
+}
+/* line 182, ../sass/_main.scss */
+#content .news-detail .date {
+  margin-top: 15px;
+  border-bottom: 2px solid red;
+  font-size: 14px;
+}
+/* line 188, ../sass/_main.scss */
+#content .news-detail .pager a {
+  border: none;
+  -moz-border-radius: 0 / 0;
+  -webkit-border-radius: 0 0;
+  border-radius: 0 / 0;
+  padding: 0;
+  font-size: 18px;
+  color: #231f20;
+}
+/* line 194, ../sass/_main.scss */
+#content .news-detail .pager a:hover {
+  background: none;
+  color: #ff0000;
+}
+/* line 200, ../sass/_main.scss */
+#content .news-detail .pager .disabled a {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+  opacity: 0.5;
+  cursor: default;
+}
 
-/* line 176, ../sass/_main.scss */
+/* line 209, ../sass/_main.scss */
 .list-projects {
   position: relative;
 }
-/* line 178, ../sass/_main.scss */
+/* line 211, ../sass/_main.scss */
 .list-projects .pager {
   position: absolute;
   top: 50%;
@@ -8425,29 +8461,29 @@ body {
   padding: 0;
   display: block;
 }
-/* line 188, ../sass/_main.scss */
+/* line 221, ../sass/_main.scss */
 .list-projects .pager.prev_page {
   left: -15px;
   background-position: left top;
 }
-/* line 191, ../sass/_main.scss */
+/* line 224, ../sass/_main.scss */
 .list-projects .pager.prev_page.disabled {
   background-position: left bottom;
 }
-/* line 195, ../sass/_main.scss */
+/* line 228, ../sass/_main.scss */
 .list-projects .pager.next_page {
   right: -15px;
   background-position: right top;
 }
-/* line 198, ../sass/_main.scss */
+/* line 231, ../sass/_main.scss */
 .list-projects .pager.next_page.disabled {
   background-position: right bottom;
 }
-/* line 204, ../sass/_main.scss */
+/* line 237, ../sass/_main.scss */
 .list-projects .tab-pane .project-item {
   text-align: center;
 }
-/* line 207, ../sass/_main.scss */
+/* line 240, ../sass/_main.scss */
 .list-projects .tab-pane .project-item a.thumbnail {
   padding: 0;
   border: none;
@@ -8456,12 +8492,12 @@ body {
   -webkit-border-radius: 0 0;
   border-radius: 0 / 0;
 }
-/* line 212, ../sass/_main.scss */
+/* line 245, ../sass/_main.scss */
 .list-projects .tab-pane .project-item a.thumbnail img {
   height: 80px;
   width: 80px;
 }
-/* line 216, ../sass/_main.scss */
+/* line 249, ../sass/_main.scss */
 .list-projects .tab-pane .project-item a.thumbnail .caption {
   display: block;
   text-align: center;
@@ -8469,23 +8505,23 @@ body {
   margin-top: 5px;
   font-size: 10px;
 }
-/* line 227, ../sass/_main.scss */
+/* line 260, ../sass/_main.scss */
 .list-projects .nav-tabs {
   border: none;
   margin-bottom: 30px;
 }
-/* line 230, ../sass/_main.scss */
+/* line 263, ../sass/_main.scss */
 .list-projects .nav-tabs li {
   border: none;
   padding: 0 8px;
   font-size: 16px;
 }
-/* line 235, ../sass/_main.scss */
+/* line 268, ../sass/_main.scss */
 .list-projects .nav-tabs li:first-child {
   background: none;
   padding-left: 0;
 }
-/* line 239, ../sass/_main.scss */
+/* line 272, ../sass/_main.scss */
 .list-projects .nav-tabs li a {
   -moz-border-radius: 0 / 0;
   -webkit-border-radius: 0 0;
@@ -8495,30 +8531,30 @@ body {
   color: #949494;
   line-height: 1em;
 }
-/* line 245, ../sass/_main.scss */
+/* line 278, ../sass/_main.scss */
 .list-projects .nav-tabs li a:hover, .list-projects .nav-tabs li a:focus {
   border: none;
   background: none;
 }
-/* line 251, ../sass/_main.scss */
+/* line 284, ../sass/_main.scss */
 .list-projects .nav-tabs li.active a {
   border-bottom: 3px solid #ff0000;
   padding-bottom: 5px;
 }
 
-/* line 261, ../sass/_main.scss */
+/* line 294, ../sass/_main.scss */
 .modal-backdrop.in {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
 }
 
-/* line 267, ../sass/_main.scss */
+/* line 300, ../sass/_main.scss */
 #project .modal-header {
   border-bottom: none;
   position: relative;
   top: -20px;
 }
-/* line 271, ../sass/_main.scss */
+/* line 304, ../sass/_main.scss */
 #project .modal-header a {
   display: block;
   width: 24px;
@@ -8527,61 +8563,61 @@ body {
   filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
   opacity: 1;
 }
-/* line 280, ../sass/_main.scss */
+/* line 313, ../sass/_main.scss */
 #project .modal-content {
   -moz-border-radius: 0 / 0;
   -webkit-border-radius: 0 0;
   border-radius: 0 / 0;
 }
-/* line 282, ../sass/_main.scss */
+/* line 315, ../sass/_main.scss */
 #project .modal-content .row {
   margin: 0;
 }
-/* line 285, ../sass/_main.scss */
+/* line 318, ../sass/_main.scss */
 #project .modal-content .project-description {
   font-family: 'din_mediumregular';
   font-size: 11px;
   padding-top: 30px;
   padding-bottom: 30px;
 }
-/* line 290, ../sass/_main.scss */
+/* line 323, ../sass/_main.scss */
 #project .modal-content .project-description label {
   display: block;
   color: #ff0000;
   font-size: 10px;
   text-transform: uppercase;
 }
-/* line 296, ../sass/_main.scss */
+/* line 329, ../sass/_main.scss */
 #project .modal-content .project-description p {
   margin: 5px 0 20px;
 }
-/* line 300, ../sass/_main.scss */
+/* line 333, ../sass/_main.scss */
 #project .modal-content .project-gallery {
   padding: 30px 25px;
 }
-/* line 303, ../sass/_main.scss */
+/* line 336, ../sass/_main.scss */
 #project .modal-content .project-gallery h2 {
   color: #ff0000;
   margin: 0 0 15px;
   font-size: 36px;
 }
-/* line 308, ../sass/_main.scss */
+/* line 341, ../sass/_main.scss */
 #project .modal-content .project-gallery .display-thumbs {
   margin-top: 15px;
 }
-/* line 311, ../sass/_main.scss */
+/* line 344, ../sass/_main.scss */
 #project .modal-content .project-gallery .display-thumbs .img-thumb img {
   width: 56px;
   height: 56px;
   cursor: pointer;
 }
-/* line 318, ../sass/_main.scss */
+/* line 351, ../sass/_main.scss */
 #project .modal-content .project-gallery .row {
   margin-left: -15px;
   margin-right: -15px;
 }
 
-/* line 326, ../sass/_main.scss */
+/* line 359, ../sass/_main.scss */
 #footer {
   margin-top: 60px;
   font-size: 9px;
@@ -8589,7 +8625,7 @@ body {
   color: #949494;
   padding-bottom: 15px;
 }
-/* line 332, ../sass/_main.scss */
+/* line 365, ../sass/_main.scss */
 #footer a {
   font-family: 'dinbold';
   color: #ff0000;
