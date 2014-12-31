@@ -17,7 +17,6 @@ global $user;
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand visible-xs" href="#">Menu</a>
           </div>
           <div class="collapse navbar-collapse" id="redElephantMenu">
             <ul class="nav navbar-nav">
