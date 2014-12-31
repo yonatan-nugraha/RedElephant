@@ -3,18 +3,18 @@ document.getElementById("about-us").classList.add("active");
 </script>
 
 <div class="row" style="margin-bottom: 30px">
-	<div class="col-xs-12">
-		<img src="<?php print file_create_url('public://') . $filename; ?>" style="width: 10in; height: 3.2in;">
+	<div class="col-lg-12 col-xs-12">
+		<img class="img-responsive" src="<?php print file_create_url('public://') . $filename; ?>">
 	</div>
 </div>
 
 
 <div class="row marketing">
-  <div class="col-xs-6">
-    <small><?php print $desc_left; ?></small>
+  <div class="col-lg-6 col-xs-6 left-content">
+    <?php print $desc_left; ?>
   </div>
 
-  <div class="col-xs-6">
-  	<strong><?php print $desc_right; ?></strong>
+  <div class="col-lg-6 col-xs-6 right-content">
+  	<?php print $desc_right; ?>
 	</div>
 </div>

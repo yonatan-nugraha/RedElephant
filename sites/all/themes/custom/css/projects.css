@@ -1,0 +1,225 @@
+@font-face {
+  font-family: 'dinregular';
+  src: url("../fonts/din-regular-webfont.eot");
+  src: url("../fonts/din-regular-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/din-regular-webfont.woff2") format("woff2"), url("../fonts/din-regular-webfont.woff") format("woff"), url("../fonts/din-regular-webfont.ttf") format("truetype"), url("../fonts/din-regular-webfont.svg#dinregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'dinbold';
+  src: url("../fonts/din-bold-webfont.eot");
+  src: url("../fonts/din-bold-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/din-bold-webfont.woff2") format("woff2"), url("../fonts/din-bold-webfont.woff") format("woff"), url("../fonts/din-bold-webfont.ttf") format("truetype"), url("../fonts/din-bold-webfont.svg#dinbold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'din_mediumregular';
+  src: url("../fonts/din-medium-webfont.eot");
+  src: url("../fonts/din-medium-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/din-medium-webfont.woff2") format("woff2"), url("../fonts/din-medium-webfont.woff") format("woff"), url("../fonts/din-medium-webfont.ttf") format("truetype"), url("../fonts/din-medium-webfont.svg#din_mediumregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'din_blackregular';
+  src: url("../fonts/din-black-webfont.eot");
+  src: url("../fonts/din-black-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/din-black-webfont.woff2") format("woff2"), url("../fonts/din-black-webfont.woff") format("woff"), url("../fonts/din-black-webfont.ttf") format("truetype"), url("../fonts/din-black-webfont.svg#din_blackregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/* line 53, ../sass/_fonts.scss */
+.helveticaLight {
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 300;
+}
+
+/* line 1, ../sass/_images.scss */
+.reLogo {
+  background: url("../images/logo.png") no-repeat left top;
+}
+
+/* line 4, ../sass/_images.scss */
+.navTabDiv, .list-projects .nav-tabs li {
+  background: url("../images/navtab-divider.gif") no-repeat left top;
+}
+
+/* line 7, ../sass/_images.scss */
+.navTabArrow, .list-projects .pager {
+  background-image: url("../images/page_arrow.png");
+  background-repeat: no-repeat;
+}
+
+/* line 11, ../sass/_images.scss */
+.closeBtn, #project .modal-header a {
+  background: url("../images/close-button.png") no-repeat left top;
+}
+
+/* line 14, ../sass/_images.scss */
+.blockBgLight, #project .modal-content .project-gallery {
+  background: url("../images/bg-box-light.gif") repeat left top;
+}
+
+/* line 7, ../sass/projects.scss */
+.list-projects {
+  position: relative;
+}
+/* line 9, ../sass/projects.scss */
+.list-projects .pager {
+  position: absolute;
+  top: 50%;
+  text-indent: -9999px;
+  width: 31px;
+  height: 36px;
+  z-index: 9;
+  padding: 0;
+  display: block;
+}
+/* line 19, ../sass/projects.scss */
+.list-projects .pager.prev_page {
+  left: -15px;
+  background-position: left top;
+}
+/* line 22, ../sass/projects.scss */
+.list-projects .pager.prev_page.disabled {
+  background-position: left bottom;
+}
+/* line 26, ../sass/projects.scss */
+.list-projects .pager.next_page {
+  right: -15px;
+  background-position: right top;
+}
+/* line 29, ../sass/projects.scss */
+.list-projects .pager.next_page.disabled {
+  background-position: right bottom;
+}
+/* line 35, ../sass/projects.scss */
+.list-projects .tab-pane .project-item {
+  text-align: center;
+}
+/* line 38, ../sass/projects.scss */
+.list-projects .tab-pane .project-item a.thumbnail {
+  padding: 0;
+  border: none;
+  margin: 0 auto 15px;
+  -moz-border-radius: 0 / 0;
+  -webkit-border-radius: 0 0;
+  border-radius: 0 / 0;
+}
+/* line 43, ../sass/projects.scss */
+.list-projects .tab-pane .project-item a.thumbnail img {
+  height: 80px;
+  width: 80px;
+}
+/* line 47, ../sass/projects.scss */
+.list-projects .tab-pane .project-item a.thumbnail .caption {
+  display: block;
+  text-align: center;
+  padding: 0;
+  margin-top: 5px;
+  font-size: 10px;
+  font-family: 'din_mediumregular';
+}
+/* line 59, ../sass/projects.scss */
+.list-projects .nav-tabs {
+  border: none;
+  margin-bottom: 30px;
+}
+/* line 62, ../sass/projects.scss */
+.list-projects .nav-tabs li {
+  border: none;
+  padding: 0 8px;
+  font-size: 16px;
+}
+/* line 67, ../sass/projects.scss */
+.list-projects .nav-tabs li:first-child {
+  background: none;
+  padding-left: 0;
+}
+/* line 71, ../sass/projects.scss */
+.list-projects .nav-tabs li a {
+  -moz-border-radius: 0 / 0;
+  -webkit-border-radius: 0 0;
+  border-radius: 0 / 0;
+  padding: 0;
+  border: none;
+  color: #949494;
+  line-height: 1em;
+}
+/* line 77, ../sass/projects.scss */
+.list-projects .nav-tabs li a:hover, .list-projects .nav-tabs li a:focus {
+  border: none;
+  background: none;
+}
+/* line 83, ../sass/projects.scss */
+.list-projects .nav-tabs li.active a {
+  border-bottom: 3px solid #ff0000;
+  padding-bottom: 5px;
+}
+
+/* line 93, ../sass/projects.scss */
+#project .modal-header {
+  border-bottom: none;
+  position: relative;
+  top: -20px;
+}
+/* line 97, ../sass/projects.scss */
+#project .modal-header a {
+  display: block;
+  width: 24px;
+  height: 24px;
+  text-indent: -9999px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(enabled=false);
+  opacity: 1;
+}
+/* line 106, ../sass/projects.scss */
+#project .modal-content {
+  -moz-border-radius: 0 / 0;
+  -webkit-border-radius: 0 0;
+  border-radius: 0 / 0;
+}
+/* line 108, ../sass/projects.scss */
+#project .modal-content .row {
+  margin: 0;
+}
+/* line 111, ../sass/projects.scss */
+#project .modal-content .project-description {
+  font-family: 'din_mediumregular';
+  font-size: 11px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+/* line 116, ../sass/projects.scss */
+#project .modal-content .project-description label {
+  display: block;
+  color: #ff0000;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+/* line 122, ../sass/projects.scss */
+#project .modal-content .project-description p {
+  margin: 5px 0 20px;
+}
+/* line 126, ../sass/projects.scss */
+#project .modal-content .project-gallery {
+  padding: 30px 25px;
+}
+/* line 129, ../sass/projects.scss */
+#project .modal-content .project-gallery h2 {
+  color: #ff0000;
+  margin: 0 0 15px;
+  font-size: 36px;
+}
+/* line 134, ../sass/projects.scss */
+#project .modal-content .project-gallery .display-thumbs {
+  margin-top: 15px;
+}
+/* line 137, ../sass/projects.scss */
+#project .modal-content .project-gallery .display-thumbs .img-thumb img {
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+}
+/* line 144, ../sass/projects.scss */
+#project .modal-content .project-gallery .row {
+  margin-left: -15px;
+  margin-right: -15px;
+}

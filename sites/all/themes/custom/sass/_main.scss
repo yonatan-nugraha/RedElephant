@@ -1,0 +1,336 @@
+body {
+	font-family: 'din_mediumregular';
+	font-size: 11px;
+}
+
+#header {
+	padding-top: 18px;
+	margin-bottom: 60px;
+	h1 {
+		float: left;
+		a {
+			width: 214px;
+			height: 26px;
+			display: block;
+			@extend .reLogo;
+			text-indent: -9999px;
+		}
+	}
+	.navbar {
+		float: right;
+		border: none;
+		background: none;
+		@extend .helveticaLight;
+		margin-bottom: 0;
+		font-size: 10px;
+		letter-spacing: 0.1em;
+		li {
+			a {
+				color: $red;
+				padding-top: 8px;
+				padding-bottom: 8px;
+				&:hover {
+					background: $red;
+					color: $white;
+				}
+				&.active {
+					color: $light-grey;
+				}
+			}
+		}
+		.navbar-collapse {
+			padding-right: 0;
+			padding-top: 15px;
+		}
+	}
+}
+
+.home-banner {
+	position: relative;
+	.text-content {
+		@include opacity(0.8);
+		background: $white;
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 30%;
+		padding-top: 10%;
+		padding-bottom: 10%;
+		padding-left: 10%;
+		padding-right: 25px;
+		font-family: 'dinregular';
+		font-size: 16px;
+		color: $dark-grey;
+		text-align: right;
+		overflow: hidden;
+		p {
+			line-height: 1.8em;
+		}
+		h2 {
+			font-size: 18px;
+			font-family: 'dinbold';
+		}
+	}
+}
+
+#content {
+	.marketing {
+		font-family: 'din_mediumregular';
+		.left-content {
+			line-height: 2em;
+			color: $lighter-grey;
+			strong, b {
+				font-family: 'din_blackregular';
+			}
+		}
+		.right-content {
+			color: $darker-grey;
+		}
+	}
+	.service-gallery, .service-description {
+		min-height: 295px;
+		padding-bottom: 20px;
+		padding-top: 20px;
+	}
+	.service-gallery {
+		background: $lightest-grey;
+		padding-left: 30px;
+		.thumb {
+			width: 75px;
+			height: 75px;
+			margin-bottom: 10px;
+			overflow: hidden;
+			img {
+				height: 75px;
+				width: auto;
+				cursor: pointer;
+			}
+		}
+	}
+	.service-description {
+		@extend .blockBg;
+		color: $white;
+		h4 {
+			font-family: 'din_blackregular';
+		}
+		label {
+			display: block;
+			text-transform: uppercase;
+		}
+		p {
+			margin: 5px 0 20px;
+		}
+	}
+	.news-title h2, .news-item {
+		min-height: 180px;
+	}
+	.news-title {
+		h2 {
+			background: $red;
+			margin: 0;
+			font-size: 48px;
+			line-height: 1em;
+			color: $white;
+			padding-top: 10px;
+			padding-left: 10px;
+		}
+	}
+	.news-item {
+		overflow: hidden;
+		margin-bottom: 15px;
+		background: $darkest-grey;
+		cursor: pointer;
+		.col-lg-7 {
+			padding-top: 15px;
+		}
+		.col-lg-5 {
+			padding: 0;
+			max-height: 180px;
+			overflow: hidden;
+		}
+		.date {
+			margin-top: 15px;
+			border-bottom: 2px solid red;
+			font-size: 14px;
+		}
+		h4 {
+			font-size: 14px;
+		}
+		p {
+			margin-top: 3px;
+		}
+		.description {
+			display: -webkit-box;
+			max-width: 400px;
+			height: $font-size*$line-height*$lines-to-show;
+			margin: 0;
+			line-height: $line-height;
+			-webkit-line-clamp: $lines-to-show;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+}
+
+.list-projects {
+	position: relative;
+	.pager {
+		position: absolute;
+		top: 50%;
+		@extend .navTabArrow;
+		text-indent: -9999px;
+		width: 31px;
+		height: 36px;
+		z-index: 9;
+		padding: 0;
+		display: block;
+		&.prev_page {
+			left: -15px;
+			background-position: left top;
+			&.disabled {
+				background-position: left bottom;
+			}
+		}
+		&.next_page {
+			right: -15px;
+			background-position: right top;
+			&.disabled {
+				background-position: right bottom;
+			}
+		}
+	}
+	.tab-pane {
+		.project-item {
+			text-align: center;
+			a {
+				&.thumbnail {
+					padding: 0;
+					border: none;
+					margin: 0 auto 15px;
+					@include border-radius(0, 0);
+					img {
+						height: 80px;
+						width: 80px;
+					}
+					.caption {
+						display: block;
+						text-align: center;
+						padding: 0;
+						margin-top: 5px;
+						font-size: 10px;
+					}
+				}
+			}
+		}
+	}
+	.nav-tabs {
+		border: none;
+		margin-bottom: 30px;
+		li {
+			border: none;
+			padding: 0 8px;
+			font-size: 16px;
+			@extend .navTabDiv;
+			&:first-child {
+				background: none;
+				padding-left: 0;
+			}
+			a {
+				@include border-radius(0, 0);
+				padding: 0;
+				border: none;
+				color: $light-grey;
+				line-height: 1em;
+				&:hover, &:focus {
+					border: none;
+					background: none;
+				}
+			}
+			&.active {
+				a {
+					border-bottom: 3px solid $red;
+					padding-bottom: 5px;
+				}
+			}
+		}
+	}
+}
+
+.modal-backdrop {
+	&.in {
+		@include opacity(0.8);
+	}
+}
+
+#project {
+	.modal-header {
+		border-bottom: none;
+		position: relative;
+		top: -20px;
+		a {
+			display: block;
+			width: 24px;
+			height: 24px;
+			@extend .closeBtn;
+			text-indent: -9999px;
+			@include opacity(1);
+		}
+	}
+	.modal-content {
+		@include border-radius(0, 0);
+		.row {
+			margin: 0;
+		}
+		.project-description {
+			font-family: 'din_mediumregular';
+			font-size: 11px;
+			padding-top: 30px;
+			padding-bottom: 30px;
+			label {
+				display: block;
+				color: $red;
+				font-size: 10px;
+				text-transform: uppercase;
+			}
+			p {
+				margin: 5px 0 20px;
+			}
+		}
+		.project-gallery {
+			@extend .blockBgLight;
+			padding: 30px 25px;
+			h2 {
+				color: $red;
+				margin: 0 0 15px;
+				font-size: 36px;
+			}
+			.display-thumbs {
+				margin-top: 15px;
+				.img-thumb {
+					img {
+						width: 56px;
+						height: 56px;
+						cursor: pointer;
+					}
+				}
+			}
+			.row {
+				margin-left: -15px;
+				margin-right: -15px;
+			}
+		}
+	}
+}
+
+#footer {
+	margin-top: 60px;
+	font-size: 9px;
+	font-family: 'dinregular';
+	color: $light-grey;
+	padding-bottom: 15px;
+	a {
+		font-family: 'dinbold';
+		color: $red;
+	}
+}

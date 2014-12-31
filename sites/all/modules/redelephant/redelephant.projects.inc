@@ -12,9 +12,9 @@
 function projects_list_form() {
   $output = '<a href="projects_list/add/local">Add Projects List here</a><br/>';
 
-  $header = array( 
+  $header = array(
     array('data' => t('No')),
-    array('data' => t('Local or Overseas')), 
+    array('data' => t('Local or Overseas')),
     array('data' => t('City')),
     array('data' => t('Action')),
   );
@@ -189,11 +189,11 @@ function projects_form() {
   $output = '<a href="projects/add/local">Add Local Projects here</a><br/>';
   $output .= '<a href="projects/add/overseas">Add Overseas Projects List here</a><br/>';
 
-  $header = array( 
+  $header = array(
     array('data' => t('No')),
-    array('data' => t('Banner')), 
+    array('data' => t('Banner')),
     array('data' => t('Title')),
-    array('data' => t('Project')), 
+    array('data' => t('Project')),
     array('data' => t('Location')),
     array('data' => t('Type')),
     array('data' => t('Size')),
@@ -201,7 +201,7 @@ function projects_form() {
     array('data' => t('Amenities')),
     array('data' => t('City')),
     array('data' => t('Action')),
-  ); 
+  );
 
   $result = db_select('projects', 'p')
   ->fields('p')
@@ -676,7 +676,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
 }
 
 function edit_projects_form_submit($form, &$form_state) {
-  $fn = explode("/", $form_state['values']['filename']); 
+  $fn = explode("/", $form_state['values']['filename']);
   for ($i=0; $i<6; $i++) {
     if (!isset($fn[$i])) {
       $fn[$i] = "";
@@ -869,39 +869,41 @@ function show_projects() {
 
     print '
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h2 class="text-primary" style="margin-top: 0"><strong>'. $result[0]->title .'</strong></h2>
+        <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></a>
       </div>
-      <div class="modal-footer">
-        <div class="col-xs-4" style="padding: 0; text-align: left;">
-          <span class="text-primary"><strong>PROJECT</span><br/> 
-          <p>'. $result[0]->project .'</p>
-          <span class="text-primary">LOCATION</span><br/>
-          <p>'. $result[0]->location .'</p>
-          <span class="text-primary">TYPE</span><br/>
-          <p>'. $result[0]->type .'</p>
-          <span class="text-primary">SIZE</span><br/>
-          <p>'. $result[0]->size .'</p>
-          <span class="text-primary">FACILITIES</span><br/>
-          <p>'. $result[0]->facilities .'</p>
-          <span class="text-primary">AMENITIES</span><br/>
-          <p>'. $result[0]->amenities .'</p></strong>
-        </div>
-        <div class="col-xs-8">
-          <div class="row" style="margin-bottom: 10px">
-            <img id="pic" src="'. file_create_url('public://') . $filename[0] .'" style="width: 370px; height: 200px; border: 5px ridge">
+      <div class="modal-content">
+        <div class="row">
+          <div class="col-lg-4 project-description">
+            <label>Project</label>
+            <p>'. $result[0]->project .'</p>
+            <label>Location</label>
+            <p>'. $result[0]->location .'</p>
+            <label>Type</label>
+            <p>'. $result[0]->type .'</p>
+            <label>Size</label>
+            <p>'. $result[0]->size .'</p>
+            <label>Facilities</label>
+            <p>'. $result[0]->facilities .'</p>
+            <label>Amenities</label>
+            <p>'. $result[0]->amenities .'</p>
           </div>
-        <div class="row">';
-    for ($i=0; $i<count($filename); $i++) {
-      if ($filename[$i] != "") {
-      print '
-            <div class="col-xs-2" style="padding-left: 0; cursor: pointer" onclick="set_image('. "'" . file_create_url('public://') . $filename[$i] . "'" .')">
-              <img src="'. file_create_url('public://') . $filename[$i] .'" style="width: 55px; height: 55px; border: 5px ridge">
-            </div>';
-      }
-    }
-    print '
+          <div class="col-lg-1">&nbsp;</div>
+          <div class="col-lg-7 project-gallery">
+            <h2>'. $result[0]->title .'</h2>
+            <img class="img-responsive" id="pic" src="'. file_create_url('public://') . $filename[0] .'">
+            <div class="row display-thumbs">';
+                for ($i=0; $i<count($filename); $i++) {
+                  if ($filename[$i] != "") {
+                  print '
+                  <div class="col-lg-2 img-thumb" onclick="set_image('. "'" . file_create_url('public://') . $filename[$i] . "'" .')">
+                    <img src="'. file_create_url('public://') . $filename[$i] .'">
+                  </div>';
+                  }
+                }
+                print '
+            </div>
           </div>
+          <div class="clearfix"></div>
         </div>
       </div>';
     die();
@@ -919,18 +921,16 @@ function show_projects() {
 
     if ($_GET['page'] > 0) {
       print '
-        <div class="col-xs-1" style="top: 190px; padding: 0">
-          <a class="pager" onclick="click_prevnext(\'prev\')"><</a>
-        </div>';
+          <a class="pager prev_page" onclick="click_prevnext(\'prev\')"></a>
+        ';
     }
     else {
          print '
-        <div class="col-xs-1" style="top: 130px; padding: 0">
-          <a class="pager btn btn-link disabled"><</a>
-        </div>';   
+          <a class="pager prev_page btn btn-link disabled"></a>
+        ';
     }
       print '
-      <div class="col-xs-10">
+      <div class="col-lg-12">
         <div id="city" style="display: none"></div>
         <h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">LOCAL</h4>
         <ul class="nav nav-tabs">';
@@ -980,13 +980,11 @@ function show_projects() {
           foreach ($result as $record) {
             $filename = explode('/', $record->filename);
             print '
-            <div class="col-xs-3" style="padding: 0" onclick="get_projectid(' . $record->id . ')">
-              <a href="#myModal" class="thumbnail" data-toggle="modal" style="margin-bottom: 0">
-                <img src="'. file_create_url('public://') . $filename[0] .'" style="height: 80px">
+            <div class="col-lg-3 project-item" onclick="get_projectid(' . $record->id . ')">
+              <a href="#myModal" class="thumbnail" data-toggle="modal">
+                <img src="'. file_create_url('public://') . $filename[0] .'">
+                <span class="caption">' . $record->title .'</span>
               </a>
-              <div class="caption">
-                <p style="text-align: center">' . $record->title .'</p>
-              </div>
             </div>';
           }
           print '</div>';
@@ -998,14 +996,13 @@ function show_projects() {
 
     if (count($project) > ($_GET['page']+1)*8) {
       print '
-      <div class="col-xs-1" style="top: 190px; padding: 0">
-        <a class="pager" onclick="click_prevnext(\'next\')">></a>
-      </div>';
+        <a class="pager next_page" onclick="click_prevnext(\'next\')"></a>
+      ';
     }
     else {
-      print '<div class="col-xs-1" style="top: 130px; padding: 0">
-        <a class="pager btn btn-link disabled">></a>
-      </div>';    
+      print '
+        <a class="pager next_page btn btn-link disabled"></a>
+      ';
     }
     die();
   }

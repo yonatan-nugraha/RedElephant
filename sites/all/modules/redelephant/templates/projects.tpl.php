@@ -81,25 +81,20 @@ function set_city(city) {
 
 </script>
 
-<style type="text/css">
-.pager {
-	font-size: 70px; 
-	margin-top: 50px; 
-	cursor: pointer
-}
-</style>
-
-<div class="row" style="margin-top: 50px">
-  <span id="city" style="display: none">Jakarta</span>
+<div class="row">
+  <!-- <span id="city" style="display: none">Jakarta</span>
   <span id="page" style="display: none">0</span>
 
   <span id="city" style="display: none">Jakarta</span>
-  <span id="page" style="display: none">0</span>
-  <div class="col-xs-6" id="local">
+  <span id="page" style="display: none">0</span> -->
+  <div class="col-lg-5 col-xs-6 list-projects">
+    <div class="row" id="local">
+    </div>
   </div>
-
-
-  <div class="col-xs-6" id="overseas">
+  <div class="col-lg-2"></div>
+  <div class="col-lg-5 col-xs-6 list-projects">
+    <div class="row" id="overseas">
+    </div>
   </div>
 <!--
     <div class="col-xs-10">
@@ -119,7 +114,7 @@ function set_city(city) {
         			<p style="text-align: center">Lorem Ipsum</p>
            	</div>
 			  	</div>
-					<?php } ?>  
+					<?php } ?>
 			  </div>
 			  <div class="tab-pane fade" id="malaysia">
 			  	<?php for ($i=0; $i<8; $i++) { ?>
@@ -131,20 +126,18 @@ function set_city(city) {
         			<p style="text-align: center">Lorem Ipsum</p>
            	</div>
 			  	</div>
-					<?php } ?>  
+					<?php } ?>
 			  </div>
 		  </div>
 		</div>
-	-->
-  </div>
+
+  </div>-->
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal-dialog modal-lg">
 	    <div id="project">
 	    </div>
-    </div>
   </div>
 </div>
