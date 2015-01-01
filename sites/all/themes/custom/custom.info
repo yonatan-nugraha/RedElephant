@@ -2,6 +2,7 @@ name = Custom Theme
 core = 7.x
 engine = phptemplate
 stylesheets[all][] = css/styles.css
+stylesheets[all][] = css/responsive.css
 
 scripts[] = js/bootstrap.js
 

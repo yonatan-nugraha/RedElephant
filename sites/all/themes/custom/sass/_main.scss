@@ -88,44 +88,48 @@ body {
 			color: $darker-grey;
 		}
 	}
-	.service-gallery, .service-description {
-		min-height: 295px;
-		padding-bottom: 20px;
-		padding-top: 20px;
-	}
-	.service-gallery {
+	.service-item {
 		background: $lightest-grey;
-		padding-left: 30px;
-		.thumb {
-			width: 75px;
-			height: 75px;
-			margin-bottom: 10px;
-			overflow: hidden;
-			img {
+		margin-bottom: 15px;
+		.service-gallery, .service-description {
+			padding-bottom: 20px;
+			padding-top: 20px;
+		}
+		.service-gallery {
+			padding-left: 30px;
+			.thumb {
+				width: 75px;
 				height: 75px;
-				width: auto;
-				cursor: pointer;
+				margin-bottom: 10px;
+				overflow: hidden;
+				img {
+					height: 75px;
+					width: auto;
+					cursor: pointer;
+				}
+			}
+		}
+		.service-description {
+			@extend .blockBg;
+			color: $white;
+			h4 {
+				font-family: 'din_blackregular';
+			}
+			label {
+				display: block;
+				text-transform: uppercase;
+			}
+			p {
+				margin: 5px 0 20px;
 			}
 		}
 	}
-	.service-description {
-		@extend .blockBg;
-		color: $white;
-		h4 {
-			font-family: 'din_blackregular';
-		}
-		label {
-			display: block;
-			text-transform: uppercase;
-		}
-		p {
-			margin: 5px 0 20px;
-		}
-	}
 	.news-title h2, .news-item {
-		min-height: 180px;
+		max-height: 180px;
+		height: 180px;
 	}
 	.news-title {
+		padding-right: 0;
 		h2 {
 			background: $red;
 			margin: 0;
@@ -237,22 +241,32 @@ body {
 	.tab-pane {
 		.project-item {
 			text-align: center;
+			padding: 8px;
 			a {
 				&.thumbnail {
 					padding: 0;
 					border: none;
-					margin: 0 auto 15px;
+					margin: 0 auto;
 					@include border-radius(0, 0);
 					img {
 						height: 80px;
 						width: 80px;
+						margin-bottom: 5px;
 					}
 					.caption {
-						display: block;
+						// display: block;
 						text-align: center;
 						padding: 0;
-						margin-top: 5px;
-						font-size: 10px;
+						font-size: $font-size-caption;
+						display: -webkit-box;
+						max-width: 400px;
+						height: $font-size-caption*$line-height-caption*$lines-to-show-caption;
+						margin: 0;
+						line-height: $line-height-caption;
+						-webkit-line-clamp: $lines-to-show-caption;
+						-webkit-box-orient: vertical;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 				}
 			}
@@ -312,15 +326,18 @@ body {
 		}
 	}
 	.modal-content {
+		@extend .blockBgLight;
 		@include border-radius(0, 0);
 		.row {
 			margin: 0;
 		}
 		.project-description {
+			background: $white;
 			font-family: 'din_mediumregular';
 			font-size: 11px;
 			padding-top: 30px;
 			padding-bottom: 30px;
+			min-height: 510px;
 			label {
 				display: block;
 				color: $red;
@@ -332,7 +349,6 @@ body {
 			}
 		}
 		.project-gallery {
-			@extend .blockBgLight;
 			padding: 30px 25px;
 			h2 {
 				color: $red;

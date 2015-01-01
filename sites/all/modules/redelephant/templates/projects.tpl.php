@@ -87,12 +87,12 @@ function set_city(city) {
 
   <span id="city" style="display: none">Jakarta</span>
   <span id="page" style="display: none">0</span> -->
-  <div class="col-lg-5 col-xs-6 list-projects">
+  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 list-projects">
     <div class="row" id="local">
     </div>
   </div>
-  <div class="col-lg-2"></div>
-  <div class="col-lg-5 col-xs-6 list-projects">
+  <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">&nbsp;</div>
+  <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 list-projects">
     <div class="row" id="overseas">
     </div>
   </div>

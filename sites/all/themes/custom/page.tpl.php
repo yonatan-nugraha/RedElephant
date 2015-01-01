@@ -5,10 +5,10 @@ global $user;
 <div class="container">
   <div id="header">
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-4 col-sm-3 col-xs-3">
         <h1><a href="<?php print $front_page;?>">Red Elephant</a></h1>
       </div>
-      <div class="col-lg-8">
+      <div class="col-lg-8 col-sm-9 col-xs-12 top-menu">
         <div class="navbar navbar-default">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#redElephantMenu">

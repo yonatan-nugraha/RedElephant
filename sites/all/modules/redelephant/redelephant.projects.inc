@@ -873,7 +873,7 @@ function show_projects() {
       </div>
       <div class="modal-content">
         <div class="row">
-          <div class="col-lg-4 project-description">
+          <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 project-description">
             <label>Project</label>
             <p>'. $result[0]->project .'</p>
             <label>Location</label>
@@ -887,15 +887,14 @@ function show_projects() {
             <label>Amenities</label>
             <p>'. $result[0]->amenities .'</p>
           </div>
-          <div class="col-lg-1">&nbsp;</div>
-          <div class="col-lg-7 project-gallery">
+          <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 project-gallery">
             <h2>'. $result[0]->title .'</h2>
             <img class="img-responsive" id="pic" src="'. file_create_url('public://') . $filename[0] .'">
             <div class="row display-thumbs">';
                 for ($i=0; $i<count($filename); $i++) {
                   if ($filename[$i] != "") {
                   print '
-                  <div class="col-lg-2 img-thumb" onclick="set_image('. "'" . file_create_url('public://') . $filename[$i] . "'" .')">
+                  <div class="col-lg-2 col-md-2 col-sm-4 col-xs-2 img-thumb" onclick="set_image('. "'" . file_create_url('public://') . $filename[$i] . "'" .')">
                     <img src="'. file_create_url('public://') . $filename[$i] .'">
                   </div>';
                   }
@@ -980,7 +979,7 @@ function show_projects() {
           foreach ($result as $record) {
             $filename = explode('/', $record->filename);
             print '
-            <div class="col-lg-3 project-item" onclick="get_projectid(' . $record->id . ')">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 project-item" onclick="get_projectid(' . $record->id . ')">
               <a href="#myModal" class="thumbnail" data-toggle="modal">
                 <img src="'. file_create_url('public://') . $filename[0] .'">
                 <span class="caption">' . $record->title .'</span>

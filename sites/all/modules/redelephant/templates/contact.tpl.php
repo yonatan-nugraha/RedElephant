@@ -6,9 +6,9 @@ document.getElementById("contact").classList.add("active");
 	<h2>HELLO THERE!</h2>
 	<p>Please take a moment to let us know what are your thoughts -</p>
 	<div class="row contact-form">
-		<div class="col-lg-5">
+		<div class="col-lg-5 col-md-5 col-sm-6 col-xs-7">
 			<div class="row">
-				<div class="col-lg-10">
+				<div class="col-lg-10 col-md-11 col-sm-11 col-xs-11">
 					<form role="form" id="myForm" action="admin/red-elephant/contact/submit" method="post" onsubmit="return alert('Thank you for taking your time to fill this form!');">
 						<div class="form-group">
 							<input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
@@ -25,11 +25,11 @@ document.getElementById("contact").classList.add("active");
 						<button type="submit" class="btn btn-default pull-right">Submit</button>
 					</form>
 				</div>
-				<div class="col-lg-2">&nbsp;</div>
+				<div class="col-lg-2 col-md-1 col-sm-1 col-xs-1">&nbsp;</div>
 				<div class="clearfix"></div>
 			</div>
 		</div>
-		<div class="col-lg-7 address">
+		<div class="col-lg-7 col-md-7 col-sm-6 col-xs-5 address">
 			<h4 class="logo">Red Elephant</h4>
 			<p>PT. REPRO KONSULTAN INDONESIA<br>Epicentrum Walk 6th Fl, unit #B627<br>Jl. HR Rasuna Said | Jakarta 12940<br>Indonesia</p>
 			<p>p. +62 21 299 121 43 | f. +62 21 299 121 42</p>
