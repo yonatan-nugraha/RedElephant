@@ -34,16 +34,18 @@ function set_image(id, filepath) {
           <p><?php print $service->location; ?></p>
           <label>Area</label>
           <p><?php print $service->area; ?></p>
-          <label>Type</label>
-          <p><?php print $service->type; ?></p>
+          <label>Bedroom</label>
+          <p><?php print $service->bedroom; ?></p>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
           <label>Size</label>
           <p><?php print $service->size; ?></p>
           <label>Facilities</label>
           <p><?php print $service->facilities; ?></p>
-          <label>Floor</label>
-          <p><?php print $service->floor; ?></p>
+          <label>Price</label>
+          <p><?php print $service->price; ?></p>
+          <label>Type</label>
+          <p><?php print $service->type; ?></p>
         </div>
       </div>
   	</div>

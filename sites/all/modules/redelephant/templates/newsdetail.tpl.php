@@ -1,3 +1,6 @@
+<script>
+document.getElementById("news").classList.add("active");
+</script>
 
 <div class="news-detail">
   <h2>WHAT'S NEW?</h2>

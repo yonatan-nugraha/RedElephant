@@ -29,7 +29,10 @@ function news_form() {
   $row = null;
   foreach ($result as $i => $record) {
     $no = $i+1;
-    $banner =  '<img src="'. file_create_url('public://') . $record->filename .'" style="height: 100px; width: 150px;">';
+
+    $filename = explode('/', $record->filename);
+    $banner =  '<img src="'. file_create_url('public://') . $filename[0] .'" style="height: 100px; width: 150px;">';
+
     $row[] = array(
       array('data' => $no),
       array('data' => $banner),
@@ -56,6 +59,20 @@ function add_news_form($form, &$form_state) {
   $form['news']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
+    '#description' => 'Recommendation size: 675 x 270',
+    '#size' => 30
+  );
+
+  $form['news']['file2'] = array(
+    '#type' => 'file',
+    '#title' => 'Image2',
+    '#description' => 'Recommendation size: 675 x 270',
+    '#size' => 30
+  );
+
+  $form['news']['file3'] = array(
+    '#type' => 'file',
+    '#title' => 'Image3',
     '#description' => 'Recommendation size: 675 x 270',
     '#size' => 30
   );
@@ -104,6 +121,32 @@ function add_news_form_submit($form, &$form_state) {
     }
   }
 
+  $file2 = file_save_upload('file2', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file2) {
+    if ($file2 = file_move($file2, 'public://')) {
+      $filename .= "/" . substr($file2->destination, strrpos($file2->destination, '/')+1);
+      $file2->status = FILE_STATUS_PERMANENT;
+      file_save($file2);
+    }
+  }
+
+  $file3 = file_save_upload('file3', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file3) {
+    if ($file3 = file_move($file3, 'public://')) {
+      $filename .= "/" . substr($file3->destination, strrpos($file3->destination, '/')+1);
+      $file3->status = FILE_STATUS_PERMANENT;
+      file_save($file2);
+    }
+  }
+
   $description = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['desc']);
 
   $result = db_insert('news')
@@ -111,7 +154,7 @@ function add_news_form_submit($form, &$form_state) {
     'date' => $form_state['values']['date'],
     'title' => $form_state['values']['title'],
     'description' => $description,
-    'filename' => $filename
+    'filename' => $filename,
   ))
   ->execute();
 
@@ -127,7 +170,11 @@ function edit_news_form($form, &$form_state, $id) {
           ->execute()
           ->fetchAll();
 
-  $banner = '<img src="'. file_create_url('public://') . $result[0]->filename .'" style="height: 250px; width: 700px;">';
+  $filename = explode('/', $result[0]->filename);
+
+  for ($i=0; $i<count($filename); $i++) {
+    $banner[$i] = '<img src="'. file_create_url('public://') . $filename[$i] .'" style="height: 250px; width: 700px;">';
+  }
 
   $form['id'] = array(
     '#type' => 'value',
@@ -153,9 +200,31 @@ function edit_news_form($form, &$form_state, $id) {
     '#size' => 30,
   );
 
-  if ($result[0]->filename != "") {
+  if (isset($filename[0])) {
     $form['news']['image'] = array(
-      '#markup' => $banner,
+      '#markup' => $banner[0],
+    );
+  }
+
+  $form['news']['file2'] = array(
+    '#type' => 'file',
+    '#title' => 'Image2',
+  );
+
+  if (isset($filename[1])) {
+    $form['news']['image2'] = array(
+      '#markup' => $banner[1],
+    );
+  }
+
+  $form['news']['file3'] = array(
+    '#type' => 'file',
+    '#title' => 'Image3',
+  );
+
+  if (isset($filename[2])) {
+    $form['news']['image3'] = array(
+      '#markup' => $banner[2],
     );
   }
 
@@ -192,6 +261,13 @@ function edit_news_form($form, &$form_state, $id) {
 }
 
 function edit_news_form_submit($form, &$form_state) {
+  $fn = explode('/', $form_state['values']['filename']); 
+  for ($i=0; $i<3; $i++) {
+    if (!isset($fn[$i])) {
+      $fn[$i] = "";
+    }
+  }
+  
   $file = file_save_upload('file', array(
     'file_validate_is_image' => array(),
     'file_validate_extensions' => array('png gif jpg jpeg'),
@@ -205,12 +281,54 @@ function edit_news_form_submit($form, &$form_state) {
     }
     else {
       form_set_error('file', t("Failed to write the uploaded file to the site's file folder."));
-      $filename = $form_state['values']['filename'];
+      $filename = $fn[0];
       return;
     }
   }
   else {
-    $filename = $form_state['values']['filename'];
+    $filename = $fn[0];
+  }
+
+  $file2 = file_save_upload('file2', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file2) {
+    if ($file2 = file_move($file2, 'public://')) {
+      $filename .= "/" . substr($file2->destination, strrpos($file2->destination, '/')+1);
+      $file2->status = FILE_STATUS_PERMANENT;
+      file_save($file2);
+    }
+    else {
+      form_set_error('file2', t("Failed to write the uploaded file to the site's file folder."));
+      $filename .= "/" . $fn[1];
+      return;
+    }
+  }
+  else {
+    $filename .= "/" . $fn[1];
+  }
+
+  $file3 = file_save_upload('file3', array(
+    'file_validate_is_image' => array(),
+    'file_validate_extensions' => array('png gif jpg jpeg'),
+  ));
+
+  if ($file3) {
+    if ($file3 = file_move($file3, 'public://')) {
+      $filename .= "/" . substr($file3->destination, strrpos($file3->destination, '/')+1);
+      $file3->status = FILE_STATUS_PERMANENT;
+      file_save($file3);
+    }
+    else {
+      form_set_error('file3', t("Failed to write the uploaded file to the site's file folder."));
+      $filename .= "/" . $fn[2];
+      return;
+    }
+  }
+  else {
+    $filename .= "/" . $fn[2];
   }
 
   $description = str_replace(array("\r\n", "\n", "\r"), "<br/>", $form_state['values']['desc']);

@@ -22,7 +22,8 @@ function services_form() {
     array('data' => t('Type')),
     array('data' => t('Size')),
     array('data' => t('Facilities')),
-    array('data' => t('Floor')),
+    array('data' => t('Bedroom')),
+    array('data' => t('Price')),
     array('data' => t('Action')),
   ); 
 
@@ -48,7 +49,8 @@ function services_form() {
       array('data' => $record->type),
       array('data' => $record->size),
       array('data' => $record->facilities),
-      array('data' => $record->floor),
+      array('data' => $record->bedroom),
+      array('data' => $record->price),
       array('data' => l('Edit', 'admin/red-elephant/services/edit/'. $record->id).' | '.l('Delete', 'admin/red-elephant/services/delete/'. $record->id))
     );
   }
@@ -116,9 +118,14 @@ function add_services_form($form, &$form_state) {
     '#title' => 'Facilities',
   );
 
-  $form['services']['floor'] = array(
-    '#type' => 'textarea',
-    '#title' => 'Floor',
+  $form['services']['bedroom'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Bedroom',
+  );
+
+  $form['services']['price'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Price',
   );
 
   $form['services']['submit'] = array(
@@ -186,7 +193,8 @@ function add_services_form_submit($form, &$form_state) {
     'type' => $form_state['values']['type'],
     'size' => $form_state['values']['size'],
     'facilities' => $facilities,
-    'floor' => $form_state['values']['floor'],
+    'bedroom' => $form_state['values']['bedroom'],
+    'price' => $form_state['values']['price'],
     'filename' => $filename,
   ))
   ->execute();
@@ -300,10 +308,16 @@ function edit_services_form($form, &$form_state, $id) {
     '#default_value' => $result[0]->facilities,
   );
 
-  $form['services']['floor'] = array(
-    '#type' => 'textarea',
-    '#title' => 'Floor',
-    '#default_value' => $result[0]->floor,
+  $form['services']['bedroom'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Bedroom',
+    '#default_value' => $result[0]->bedroom,
+  );
+
+  $form['services']['price'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Price',
+    '#default_value' => $result[0]->price,
   );
 
   $form['services']['submit'] = array(
@@ -402,7 +416,8 @@ function edit_services_form_submit($form, &$form_state) {
     'type' => $form_state['values']['type'],
     'size' => $form_state['values']['size'],
     'facilities' => $facilities,
-    'floor' => $form_state['values']['floor'],
+    'bedroom' => $form_state['values']['bedroom'],
+    'price' => $form_state['values']['price'],
     'filename' => $filename,
   ))
   ->condition('id', $form_state['values']['id'] , '=')

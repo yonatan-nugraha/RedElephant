@@ -306,10 +306,7 @@ function add_projects_form($form, &$form_state, $locover) {
     $form['projects']['city'] = array(
       '#type' => 'select',
       '#title' => 'Overseas',
-      '#options' => array(
-        'Singapore' => t('Singapore'),
-        'Malaysia' => t('Malaysia'),
-      ),
+      '#options' => $city_array,
     );
   }
 
@@ -612,10 +609,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
     $form['projects']['city'] = array(
       '#type' => 'select',
       '#title' => 'Overseas',
-      '#options' => array(
-        'Singapore' => t('Singapore'),
-        'Malaysia' => t('Malaysia'),
-      ),
+      '#options' => $city_array,
     );
   }
 
@@ -910,17 +904,17 @@ function show_projects() {
 
 
 
-  if (isset($_GET['city'])) {
+  if (isset($_GET['localoverseas'])) {
 
       $firstcity = db_select('projects', 'p')
         ->fields('p')
-        ->condition('localoverseas', $_GET['city'], '=')
+        ->condition('city', $_GET['city'], '=')
         ->execute()
         ->fetchAll();
 
     if ($_GET['page'] > 0) {
       print '
-          <a class="pager prev_page" onclick="click_prevnext(\'prev\')"></a>
+          <a class="pager prev_page" onclick="click_prevnext(\'prev\', \''.$_GET['localoverseas'].'\')"></a>
         ';
     }
     else {
@@ -931,12 +925,12 @@ function show_projects() {
       print '
       <div class="col-lg-12">
         <div id="city" style="display: none"></div>
-        <h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">LOCAL</h4>
+        <h4 style="margin-bottom: 40px; font-weight: bold; font-size: 25px;">'.strtoupper($_GET['localoverseas']).'</h4>
         <ul class="nav nav-tabs">';
 
       $projects_list = db_select('projects_list', 'pl')
         ->fields('pl')
-        ->condition('localoverseas', $_GET['city'], '=')
+        ->condition('localoverseas', $_GET['localoverseas'], '=')
         ->execute()
         ->fetchAll();
 
@@ -949,10 +943,10 @@ function show_projects() {
 
         if ($pl->city == $firstcity[0]->city) {
           print '
-          <li class="active"><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
+          <li class="active"><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $_GET['localoverseas'] .'\', \'' . $pl->city . '\')">'. $pl->city .'</a></li>';
         } else {
           print '
-          <li><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $pl->city .'\')">'. $pl->city .'</a></li>';
+          <li><a href="#'. $pl->city .'" data-toggle="tab" onclick="set_city(\''. $_GET['localoverseas'] .'\', \'' . $pl->city . '\')">'. $pl->city .'</a></li>';
         }
       }
         print '
@@ -969,14 +963,14 @@ function show_projects() {
           <div class="tab-pane fade" id="'. $pl->city .'">';
         }
 
-        $result = db_select('projects', 'p')
+        $project = db_select('projects', 'p')
         ->fields('p')
         ->condition('city', $pl->city, '=')
         ->range(8*$_GET['page'], 8)
         ->execute()
         ->fetchAll();
 
-          foreach ($result as $record) {
+          foreach ($project as $record) {
             $filename = explode('/', $record->filename);
             print '
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 project-item" onclick="get_projectid(' . $record->id . ')">
@@ -993,9 +987,9 @@ function show_projects() {
         </div>
       </div>';
 
-    if (count($project) > ($_GET['page']+1)*8) {
+    if (count($firstcity) > ($_GET['page']+1)*8) {
       print '
-        <a class="pager next_page" onclick="click_prevnext(\'next\')"></a>
+        <a class="pager next_page" onclick="click_prevnext(\'next\', \''.$_GET['localoverseas'].'\')"></a>
       ';
     }
     else {
