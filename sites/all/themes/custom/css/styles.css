@@ -1,4 +1,4 @@
-@charset "UTF-8";
+@#charset "UTF-8";
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 /* line 9, ../../../../../../../../../../Library/Ruby/Gems/2.0.0/gems/bootstrap-sass-3.3.1.0/assets/stylesheets/bootstrap/_normalize.scss */
 html {
@@ -8463,7 +8463,9 @@ body {
   opacity: 0.5;
   cursor: default;
 }
-
+#content.project-page {
+  min-height: 376px;
+}
 /* line 214, ../sass/_main.scss */
 .list-projects {
   position: relative;
