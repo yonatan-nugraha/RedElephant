@@ -43,7 +43,7 @@ global $user;
     </div>
   </div>
 
-  <div id="content" class="project-page">
+  <div id="content">
       <?php print render($page['content']); ?>
   </div>
 
