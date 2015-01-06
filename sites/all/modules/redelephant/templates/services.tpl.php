@@ -19,7 +19,7 @@ $(document).ready() {
    </div>
    <div class="col-lg-7 col-md-7 col-sm-5 col-xs-5 search-form">
       <div class="row">
-         <div class="col-lg-5">
+         <div class="col-lg-5 col-md-5 col-sm-6">
             <div class="input-group">
                <select class="selectpicker">
                  <option>Buy</option>
@@ -42,7 +42,7 @@ $(document).ready() {
                </select>
             </div>
          </div>
-         <div class="col-lg-5">
+         <div class="col-lg-5 col-md-5 col-sm-6">
             <div class="input-group">
                <select class="selectpicker">
                  <option>Buy</option>
@@ -61,7 +61,7 @@ $(document).ready() {
                <button class="btn btn-primary">Find Project</button>
             </div>
          </div>
-         <div class="col-lg-2">&nbsp;</div>
+         <div class="col-lg-2 col-md-2 hidden-sm">&nbsp;</div>
          <div class="clearfix"></div>
       </div>
    </div>
