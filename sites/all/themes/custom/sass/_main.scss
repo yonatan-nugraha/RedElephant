@@ -2,6 +2,7 @@ body {
 	font-family: 'din_mediumregular';
 	color: $grey-font;
 	font-size: 11px;
+	// border: 1px solid red;
 }
 
 #header {
@@ -192,7 +193,7 @@ body {
 		.pager {
 			a {
 				border: none;
-				@include border-radius(0, 0);
+				@include border-radius(0);
 				padding: 0;
 				font-size: 18px;
 				color: $darker-grey;
@@ -209,8 +210,86 @@ body {
 			}
 		}
 	}
-	&.product-page {
+	.project-page {
 		min-height: 376px;
+	}
+	.service-search {
+		background: $search-grey;
+		.title {
+			padding: 12px;
+			h2 {
+				font-family: 'dinregular';
+				font-weight: 300;
+				text-transform: uppercase;
+				color: $white;
+				line-height: 1.2em;
+				margin: 0;
+			}
+		}
+		.search-form {
+			background: $search-grey2;
+			padding-top: 20px;
+			padding-bottom: 10px;
+			margin-bottom: 0;
+			.input-group {
+				margin-bottom: 12px;
+				.btn-group {
+					&.bootstrap-select {
+						&.input-group-btn {
+							.caret {
+								border: none;
+								@extend .reCaret;
+								display: block;
+								width: 12px;
+								height: 10px;
+								top: 40%;
+							}
+						}
+					}
+				}
+				.input-group-btn {
+					background: $white;
+					@include border-radius(8px);
+					button {
+						background: none;
+						border: none;
+						color: $search-grey2;
+						font-size: 10px;
+						font-family: 'dinregular';
+						text-transform: uppercase;
+					}
+					.dropdown-menu > {
+						li > {
+							a {
+								&:focus, &:active {
+									outline: none;
+									border: none;
+								}
+							}
+						}
+					}
+				}
+				.btn-primary {
+					@include border-radius(8px);
+					font-size: 10px;
+					text-transform: uppercase;
+					padding: 5px 10px;
+					color: $white;
+					font-family: 'dinbold';
+					background: $btn-primary;
+					margin-top: 2px;
+					border: none;
+				}
+			}
+		}
+	}
+	.not-found {
+		margin: 20px;
+		text-align: center;
+		color: $red;
+		font-size: 20px;
+		font-family: 'dinregular';
+		display: none;
 	}
 }
 
@@ -250,7 +329,7 @@ body {
 					padding: 0;
 					border: none;
 					margin: 0 auto;
-					@include border-radius(0, 0);
+					@include border-radius(0);
 					img {
 						height: 80px;
 						width: 80px;
@@ -288,7 +367,7 @@ body {
 				padding-left: 0;
 			}
 			a {
-				@include border-radius(0, 0);
+				@include border-radius(0);
 				padding: 0;
 				border: none;
 				color: $light-grey;
@@ -330,7 +409,7 @@ body {
 	}
 	.modal-content {
 		@extend .blockBgLight;
-		@include border-radius(0, 0);
+		@include border-radius(0);
 		.row {
 			margin: 0;
 		}
@@ -392,7 +471,7 @@ body {
 			padding: 5px 0;
 			.form-control {
 				border-color: $form-border;
-				@include border-radius(0, 0);
+				@include border-radius(0);
 				font-size: 8px;
 				text-transform: uppercase;
 			}

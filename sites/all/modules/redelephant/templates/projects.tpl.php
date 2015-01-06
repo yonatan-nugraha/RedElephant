@@ -88,7 +88,8 @@ function set_city(localoverseas, city) {
 
 </script>
 
-<div class="row">
+<div class="project-page">
+  <div class="row">
   <span id="city-local" style="display: none">Jakarta</span>
   <span id="page-local" style="display: none">0</span>
 
@@ -105,6 +106,8 @@ function set_city(localoverseas, city) {
     </div>
   </div>
 </div>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
