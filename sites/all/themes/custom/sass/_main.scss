@@ -233,6 +233,20 @@ body {
 			margin-bottom: 0;
 			.input-group {
 				margin-bottom: 12px;
+				.btn-group {
+					&.bootstrap-select {
+						&.input-group-btn {
+							.caret {
+								border: none;
+								@extend .reCaret;
+								display: block;
+								width: 12px;
+								height: 10px;
+								top: 40%;
+							}
+						}
+					}
+				}
 				.input-group-btn {
 					background: $white;
 					@include border-radius(8px);
