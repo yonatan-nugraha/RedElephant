@@ -5,12 +5,6 @@ function set_image(id, filepath) {
   document.getElementById(id).src = filepath;
 }
 
-$(document).ready() {
-   $('.selectpicker').selectpicker({
-      style: 'btn-info',
-      size: 4
-  });
-}
 </script>
 
 <div class="service-search">
