@@ -260,6 +260,13 @@ function redelephant_menu() {
     'file' => 'redelephant.inc',
   );
 
+  $items['services/find_projects'] = array(
+    'page callback' => 'find_projects', 
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'redelephant.services.inc',
+  );
+
   $items['news'] = array(
     'page callback' => 'news_view', 
     'access callback' => TRUE,

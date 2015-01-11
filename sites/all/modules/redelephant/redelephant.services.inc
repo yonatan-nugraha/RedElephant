@@ -451,3 +451,77 @@ function delete_services_form_submit($form, &$form_state) {
   drupal_set_message('Succesfully deleted');
   $form_state['redirect'] = 'admin/red-elephant/services';
 }
+
+function find_projects($form, &$form_state, $id) {
+  $buy = $_POST["buy"];
+  $buildingname = $_POST["buildingname"];
+  $bedrooms = $_POST["bedrooms"];
+  $type = $_POST["type"];
+  $location = $_POST["location"];
+
+  $services = db_select('services', 's')
+    ->fields('s')
+    ->condition('title', $buy, '=')
+    ->condition('project', '%' . $buildingname . '%', 'LIKE')
+    ->condition('bedroom', '%' . $bedrooms . '%', 'LIKE')
+    ->condition('type', '%' . $type . '%', 'LIKE')
+    ->condition('location', '%' . $location . '%', 'LIKE')
+    ->execute()
+    ->fetchAll();
+
+  if (count($services) == 0) {
+    print '<div style="margin: 20px; text-align: center; color: #ff0000; font-size: 20px; ">"search not found"</div>';
+  }
+
+  foreach ($services as $id=>$service) { 
+    $filename = explode("/", $service->filename);
+    print '
+
+    <div class="service-item">
+      <div class="col-lg-5 col-md-5 col-sm-7 col-xs-7 service-gallery">
+        <div class="row">
+          <div class="col-lg-8 col-md-8 col-sm-9 col-xs-8">
+            <img id="'. $id .'" class="img-responsive" src="'. file_create_url('public://') . $filename[0].'">
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4">';
+            for ($i=0; $i<3; $i++) { 
+              if (isset($filename[$i])) {
+                print '
+            <div class="thumb">
+              <img src="'.file_create_url('public://') . $filename[$i] .'" onclick="set_image(\''. $id . '\',\'' . file_create_url('public://') . $filename[$i] .'\')">
+            </div>';
+              } 
+            }
+            print '
+          </div>
+          <div class="col-lg-1 col-md-1 hidden-sm hidden-xs">&nbsp;</div>
+        </div>
+      </div>
+      <div class="col-lg-7 col-md-7 col-sm-5 col-xs-5 service-description">
+        <h4 style="text-transform: uppercase">'. $service->title .'</h4>
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <label>Project</label>
+            <p>'. $service->project .'</p>
+            <label>Location</label>
+            <p>'. $service->location .'</p>
+            <label>Area</label>
+            <p>'. $service->area .'</p>
+            <label>Bedroom</label>
+            <p>'. $service->bedroom .'</p>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 col-xs-5">
+            <label>Size</label>
+            <p>'. $service->size .'</p>
+            <label>Facilities</label>
+            <p>'. $service->facilities .'</p>
+            <label>Price</label>
+            <p>'. $service->price .'</p>
+            <label>Type</label>
+            <p>'. $service->type .'</p>
+          </div>
+        </div>
+      </div>
+      <div class="clearfix"></div></div>';
+    }
+}
