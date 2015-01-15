@@ -141,7 +141,5 @@ function set_image(id, filepath) {
     	</div>
       <div class="clearfix"></div>
     </div>
-
-
-<?php } ?>
-
+  <?php } ?>
+</div>

@@ -2,6 +2,7 @@
 global $user;
 ?>
 
+<div id="wrapper">
 <div class="container">
   <div id="header">
     <div class="row">
@@ -46,13 +47,14 @@ global $user;
   <div id="content">
       <?php print render($page['content']); ?>
   </div>
-
-  <div id="footer">
-     <?php if ($page['footer']): ?>
-      <?php print render($page['footer']); ?>
-    <?php endif; ?>
-    <div class="pull-left"><a href="#">info@redelephant.com</a></div>
-    <div class="pull-right">&copy; 2014 Red Elephant, Inc.</div>
-    <div class="clearfix"></div>
-  </div>
+</div>
+<div id="footer">
+    <div class="container">
+      <?php if ($page['footer']): ?>
+        <?php print render($page['footer']); ?>
+      <?php endif; ?>
+      <div class="pull-left"><a href="#">info@redelephant.com</a></div>
+      <div class="pull-right">&copy; 2014 Red Elephant, Inc.</div>
+      <div class="clearfix"></div>
+    </div>
 </div>

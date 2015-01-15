@@ -1,8 +1,25 @@
+html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
+}
+
 body {
 	font-family: 'din_mediumregular';
 	color: $grey-font;
 	font-size: 11px;
 	// border: 1px solid red;
+}
+
+#wrapper {
+	min-height: 100%;
+	position: relative;
+}
+
+.home-banner,
+#content {
+	padding-bottom: 67px;
 }
 
 #header {
@@ -493,11 +510,15 @@ body {
 }
 
 #footer {
-	margin-top: 60px;
 	font-size: 9px;
 	font-family: 'dinregular';
 	color: $light-grey;
 	padding-bottom: 15px;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	height: 27px;
 	a {
 		font-family: 'dinbold';
 		color: $red;
