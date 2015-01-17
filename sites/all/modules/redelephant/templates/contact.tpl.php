@@ -6,7 +6,7 @@ document.getElementById("contact").classList.add("active");
 	<h2>HELLO THERE!</h2>
 	<p>Please take a moment to let us know what are your thoughts -</p>
 	<div class="row contact-form">
-		<div class="col-lg-5 col-md-5 col-sm-6 col-xs-7">
+		<div class="col-lg-5 col-md-5 col-sm-6 col-xs-7" style="border-right: 1px solid #bfbfbf">
 			<div class="row">
 				<div class="col-lg-10 col-md-11 col-sm-11 col-xs-11">
 					<form role="form" id="myForm" action="admin/red-elephant/contact/submit" method="post" onsubmit="return alert('Thank you for taking your time to fill this form!');">
