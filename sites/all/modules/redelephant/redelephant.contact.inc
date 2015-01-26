@@ -15,7 +15,7 @@ function contact_form() {
     array('data' => t('Name')), 
     array('data' => t('Email')), 
     array('data' => t('Phone')),
-    array('data' => t('Address')),
+    array('data' => t('Note')),
     array('data' => t('Action')),
   ); 
 
@@ -53,7 +53,7 @@ function contact_form_submit() {
     $body = "Name: " . $_POST['name'] . "\n";
     $body .= "Email: " . $_POST['email'] . "\n";
     $body .= "Phone: " . $_POST['phone'] . "\n";
-    $body .= "Address: " . $_POST['address'];
+    $body .= "Note: " . $_POST['address'];
 
     $params = array(
         'subject' => $subject,

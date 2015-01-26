@@ -267,31 +267,37 @@ function add_projects_form($form, &$form_state, $locover) {
   $form['projects']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   $form['projects']['file2'] = array(
     '#type' => 'file',
     '#title' => 'Image2',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   $form['projects']['file3'] = array(
     '#type' => 'file',
     '#title' => 'Image3',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   $form['projects']['file4'] = array(
     '#type' => 'file',
     '#title' => 'Image4',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   $form['projects']['file5'] = array(
     '#type' => 'file',
     '#title' => 'Image5',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   $form['projects']['file6'] = array(
     '#type' => 'file',
     '#title' => 'Image6',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   if ($locover == "local") {
@@ -534,6 +540,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
   $form['projects']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   if (isset($banner[0])) {
@@ -545,6 +552,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
   $form['projects']['file2'] = array(
     '#type' => 'file',
     '#title' => 'Image2',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   if (isset($banner[1])) {
@@ -556,6 +564,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
   $form['projects']['file3'] = array(
     '#type' => 'file',
     '#title' => 'Image3',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   if (isset($banner[2])) {
@@ -567,6 +576,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
   $form['projects']['file4'] = array(
     '#type' => 'file',
     '#title' => 'Image4',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   if (isset($banner[3])) {
@@ -578,6 +588,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
   $form['projects']['file5'] = array(
     '#type' => 'file',
     '#title' => 'Image5',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   if (isset($banner[4])) {
@@ -589,6 +600,7 @@ function edit_projects_form($form, &$form_state, $locover, $id) {
   $form['projects']['file6'] = array(
     '#type' => 'file',
     '#title' => 'Image6',
+    '#description' => 'Recommended size : w554px h372px',
   );
 
   if (isset($banner[5])) {

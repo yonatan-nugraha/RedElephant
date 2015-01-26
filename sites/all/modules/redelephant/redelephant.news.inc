@@ -59,22 +59,19 @@ function add_news_form($form, &$form_state) {
   $form['news']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
-    '#description' => 'Recommendation size: 675 x 270',
-    '#size' => 30
+    '#description' => 'Recommended size: w675px h270px',
   );
 
   $form['news']['file2'] = array(
     '#type' => 'file',
     '#title' => 'Image2',
-    '#description' => 'Recommendation size: 675 x 270',
-    '#size' => 30
+    '#description' => 'Recommended size: w675px h270px',
   );
 
   $form['news']['file3'] = array(
     '#type' => 'file',
     '#title' => 'Image3',
-    '#description' => 'Recommendation size: 675 x 270',
-    '#size' => 30
+    '#description' => 'Recommended size: w675px h270px',
   );
 
   $form['news']['date'] = array(
@@ -196,8 +193,7 @@ function edit_news_form($form, &$form_state, $id) {
   $form['news']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
-    '#description' => 'Recommendation size: 675 x 270',
-    '#size' => 30,
+    '#description' => 'Recommended size: w675px h270px',
   );
 
   if (isset($filename[0])) {
@@ -209,6 +205,7 @@ function edit_news_form($form, &$form_state, $id) {
   $form['news']['file2'] = array(
     '#type' => 'file',
     '#title' => 'Image2',
+    '#description' => 'Recommended size: w675px h270px',
   );
 
   if (isset($filename[1])) {
@@ -220,6 +217,7 @@ function edit_news_form($form, &$form_state, $id) {
   $form['news']['file3'] = array(
     '#type' => 'file',
     '#title' => 'Image3',
+    '#description' => 'Recommended size: w675px h270px',
   );
 
   if (isset($filename[2])) {

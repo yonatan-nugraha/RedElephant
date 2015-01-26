@@ -71,16 +71,19 @@ function add_services_form($form, &$form_state) {
   $form['services']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
+    '#description' => 'Recommended size : w380px h260px',
   );
 
   $form['services']['file2'] = array(
     '#type' => 'file',
     '#title' => 'Image2',
+    '#description' => 'Recommended size : w380px h260px',
   );
 
   $form['services']['file3'] = array(
     '#type' => 'file',
     '#title' => 'Image3',
+    '#description' => 'Recommended size : w380px h260px',
   );
 
   $form['services']['title'] = array(
@@ -236,6 +239,7 @@ function edit_services_form($form, &$form_state, $id) {
   $form['services']['file'] = array(
     '#type' => 'file',
     '#title' => 'Image',
+    '#description' => 'Recommended size : w380px h260px',
   );
 
   if (isset($filename[0])) {
@@ -247,6 +251,7 @@ function edit_services_form($form, &$form_state, $id) {
   $form['services']['file2'] = array(
     '#type' => 'file',
     '#title' => 'Image2',
+    '#description' => 'Recommended size : w380px h260px',
   );
 
   if (isset($filename[1])) {
@@ -258,6 +263,7 @@ function edit_services_form($form, &$form_state, $id) {
   $form['services']['file3'] = array(
     '#type' => 'file',
     '#title' => 'Image3',
+    '#description' => 'Recommended size : w380px h260px',
   );
 
   if (isset($filename[2])) {

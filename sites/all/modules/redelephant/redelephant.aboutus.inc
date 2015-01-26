@@ -27,7 +27,7 @@ function aboutus_form($form, &$form_state) {
   $form['about_us']['file'] = array(
     '#title' => 'Image',
     '#type' => 'file',
-    '#description' => 'Recommendation size: 675 x 270',
+    '#description' => 'Min width : 1170px',
     '#size' => 30,
   );
 
