@@ -232,6 +232,18 @@ body {
 			.thumbnail {
 				border: none;
 				padding: 0 4px;
+				img {
+					@include opacity(0.5);
+					transition-property: opacity;
+					-webkit-transition: all .2s ease;
+					-moz-transition: all .2s ease;
+					-ms-transition: all .2s ease;
+					-o-transition: all .2s ease;
+					transition: all .2s ease;
+					&:hover {
+						@include opacity(1);
+					}
+				}
 			}
 		}
 	}
