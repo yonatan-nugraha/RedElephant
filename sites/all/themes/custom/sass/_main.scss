@@ -226,6 +226,14 @@ body {
 				}
 			}
 		}
+		.thumb-image {
+			margin-top: 8px;
+			padding: 0 10px;
+			.thumbnail {
+				border: none;
+				padding: 0 4px;
+			}
+		}
 	}
 	.project-page {
 		min-height: 376px;
